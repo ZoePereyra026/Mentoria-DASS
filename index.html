@@ -1,0 +1,2155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mentoría DASS - Ecosistema Integral de Acompañamiento Académico | UCSE Jujuy</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons & Google Fonts (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            ucse: {
+              navy: '#0A2540',
+              deep: '#061626',
+              blue: '#0F4C81',
+              royal: '#1D63B8',
+              sky: '#38BDF8',
+              skyHover: '#0284C7',
+              skyLight: '#F0F9FF',
+              gold: '#F59E0B',
+              goldLight: '#FEF3C7',
+              goldDark: '#B45309',
+              goldHover: '#D97706',
+              grayBg: '#F8FAFC',
+              surface: '#FFFFFF',
+            }
+          },
+          boxShadow: {
+            'card-soft': '0 10px 25px -5px rgba(10, 37, 64, 0.07), 0 8px 10px -6px rgba(10, 37, 64, 0.04)',
+            'float': '0 20px 35px -10px rgba(10, 37, 64, 0.18)',
+            'phone': '0 25px 60px -15px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+            'glow-gold': '0 0 20px rgba(245, 158, 11, 0.35)',
+            'glow-sky': '0 0 20px rgba(56, 189, 248, 0.35)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom polished scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F1F5F9;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #94A3B8;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #64748B;
+    }
+    
+    .mobile-screen-body {
+      scrollbar-width: thin;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .pulse-dot {
+      animation: pulseAnimation 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulseAnimation {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.15); }
+    }
+  </style>
+</head>
+
+<body class="bg-slate-950 text-slate-800 antialiased min-h-screen flex flex-col font-sans selection:bg-ucse-gold selection:text-ucse-navy">
+
+  <header class="bg-ucse-deep border-b border-slate-800/90 sticky top-0 z-50 px-4 py-3 shadow-xl backdrop-blur-md">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3">
+      
+      <!-- Brand UCSE DASS -->
+      <div class="flex items-center gap-3">
+        <div class="h-11 w-11 rounded-xl bg-white p-1 flex items-center justify-center shadow-lg ring-1 ring-white/20">
+          <div class="h-full w-full bg-ucse-navy rounded-lg flex flex-col items-center justify-center font-bold text-[9px] text-white leading-tight">
+            <span class="text-ucse-gold font-extrabold text-[12px] tracking-wider">UCSE</span>
+            <span class="text-[7px] font-semibold text-slate-300 tracking-widest">DASS</span>
+          </div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-white font-extrabold text-lg tracking-tight flex items-center gap-1.5">
+              MENTORÍA DASS
+              <span class="text-ucse-sky text-xs font-mono font-normal hidden sm:inline">v2.4-Pro</span>
+            </h1>
+            <span class="bg-gradient-to-r from-amber-500/20 to-ucse-gold/20 text-amber-300 border border-amber-500/40 text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+              Solución Design Thinking
+            </span>
+          </div>
+          <p class="text-slate-400 text-xs hidden md:block">
+            Acompañamiento Académico Integral · Tutorías de Pares · Mentoría TFG · Repositorio Digital Abierto
+          </p>
+        </div>
+      </div>
+
+      <!-- Device View Controls -->
+      <div class="flex items-center gap-2">
+        <div class="flex items-center bg-slate-900/90 p-1 rounded-xl border border-slate-700/80 text-xs font-semibold text-slate-300 shadow-inner">
+          <button id="btnViewDual" onclick="setViewMode('dual')" class="px-3.5 py-1.5 rounded-lg transition-all duration-200 flex items-center gap-1.5 bg-ucse-royal text-white shadow-md">
+            <i class="ph ph-squares-four text-base"></i>
+            <span class="hidden sm:inline">Vista Dual</span>
+          </button>
+          <button id="btnViewMobile" onclick="setViewMode('mobile')" class="px-3.5 py-1.5 rounded-lg transition-all duration-200 flex items-center gap-1.5 hover:text-white">
+            <i class="ph ph-device-mobile text-base"></i>
+            <span class="hidden sm:inline">App Móvil</span>
+          </button>
+          <button id="btnViewDesktop" onclick="setViewMode('desktop')" class="px-3.5 py-1.5 rounded-lg transition-all duration-200 flex items-center gap-1.5 hover:text-white">
+            <i class="ph ph-laptop text-base"></i>
+            <span class="hidden sm:inline">Portal Web</span>
+          </button>
+        </div>
+
+        <!-- Notification Bell Simulator -->
+        <button onclick="toggleNotificationPanel()" class="relative p-2 rounded-xl bg-slate-900 border border-slate-700/80 text-slate-300 hover:text-white hover:border-slate-600 transition shadow">
+          <i class="ph ph-bell text-lg"></i>
+          <span id="globalNotificationBadge" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white text-[9px] font-black flex items-center justify-center ring-2 ring-slate-950">2</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Notification Dropdown -->
+  <div id="notificationDropdown" class="hidden fixed top-16 right-6 z-50 w-80 bg-white rounded-2xl shadow-2xl border border-slate-200 p-4 transition-all">
+    <div class="flex items-center justify-between pb-2 mb-3 border-b border-slate-100">
+      <div class="flex items-center gap-2">
+        <i class="ph-fill ph-bell-ringing text-ucse-royal text-base"></i>
+        <h4 class="font-bold text-xs text-slate-900 uppercase tracking-wide">Notificaciones Académicas</h4>
+      </div>
+      <button onclick="clearNotifications()" class="text-[10px] text-ucse-royal hover:underline font-semibold">Marcar leídas</button>
+    </div>
+    <div class="space-y-2.5 text-xs">
+      <div class="p-2.5 bg-blue-50/70 border border-blue-100 rounded-xl">
+        <div class="font-bold text-slate-800 text-[11px] flex items-center justify-between">
+          <span>Tutoría Confirmada</span>
+          <span class="text-[9px] text-slate-400 font-normal">Hace 15m</span>
+        </div>
+        <p class="text-[10px] text-slate-600 mt-0.5">Sofía Martínez aceptó tu sesión para el Jueves 16:00 hs (Programación II).</p>
+      </div>
+      <div class="p-2.5 bg-amber-50/70 border border-amber-100 rounded-xl">
+        <div class="font-bold text-slate-800 text-[11px] flex items-center justify-between">
+          <span>Expediente de TFG</span>
+          <span class="text-[9px] text-slate-400 font-normal">Ayer</span>
+        </div>
+        <p class="text-[10px] text-slate-600 mt-0.5">Dra. Ana López revisó tu borrador preliminar. Estado: <strong class="text-amber-800">En Evaluación</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <main class="flex-1 max-w-[1760px] w-full mx-auto p-3 sm:p-5 lg:p-7">
+    <div id="dualContainer" class="grid grid-cols-1 xl:grid-cols-12 gap-7 items-start transition-all duration-300">
+
+      <!-- ========================================================================= -->
+      <!-- COLUMNA 1: PROTOTIPO APP MÓVIL ESTUDIANTIL (NEXO DIRECTO / P2P)          -->
+      <!-- ========================================================================= -->
+      <section id="mobileColumn" class="xl:col-span-4 flex flex-col items-center">
+        
+        <div class="w-full flex items-center justify-between mb-3 px-2">
+          <div class="flex items-center gap-2 text-slate-300 text-xs font-semibold uppercase tracking-wider">
+            <i class="ph ph-device-mobile text-ucse-sky text-lg"></i>
+            <span>App Móvil Alumnos</span>
+          </div>
+          <div class="flex items-center gap-1.5 text-[11px] bg-slate-900 border border-slate-700 text-ucse-sky px-2.5 py-0.5 rounded-full font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 pulse-dot"></span>
+            <span>Estudiantes Activos: 1.4k</span>
+          </div>
+        </div>
+
+        <!-- Phone Mockup Device Frame -->
+        <div class="w-full max-w-[405px] h-[825px] bg-slate-950 rounded-[50px] p-3.5 shadow-phone border-4 border-slate-700/80 relative ring-1 ring-white/10 flex flex-col">
+          
+          <div class="absolute top-5 left-1/2 -translate-x-1/2 w-32 h-5 bg-black rounded-full z-40 flex items-center justify-between px-3">
+            <div class="w-2.5 h-2.5 rounded-full bg-slate-900 border border-slate-800"></div>
+            <div class="w-2 h-2 rounded-full bg-emerald-500/80"></div>
+          </div>
+
+          <div class="w-full h-full bg-ucse-grayBg rounded-[40px] overflow-hidden flex flex-col relative shadow-inner">
+            
+            <div class="h-10 bg-ucse-navy text-white px-7 pt-2 flex items-center justify-between text-[11px] font-semibold select-none z-30">
+              <span class="tracking-tight">19:45</span>
+              <div class="flex items-center gap-2 text-slate-300 text-xs">
+                <i class="ph ph-cell-signal-full"></i>
+                <i class="ph ph-wifi-high"></i>
+                <i class="ph ph-battery-charging text-ucse-gold text-sm font-bold"></i>
+              </div>
+            </div>
+
+            <div class="bg-ucse-navy text-white px-4 pt-1.5 pb-3.5 shadow-md z-20 border-b border-ucse-blue/40">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-xl bg-white p-0.5 flex items-center justify-center shadow">
+                    <div class="w-full h-full bg-ucse-navy rounded-lg flex flex-col items-center justify-center font-black text-[7px] text-white">
+                      <span class="text-ucse-gold text-[9px] leading-none">U</span>
+                      <span class="text-[6px] text-slate-300 leading-none">DASS</span>
+                    </div>
+                  </div>
+                  <div>
+                    <h2 class="text-sm font-black tracking-tight text-white leading-tight">Mentoría DASS</h2>
+                    <p class="text-[9px] text-ucse-sky font-semibold tracking-wider uppercase">Sede San Salvador</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-1.5">
+                  <button onclick="showToast('Sincronizando con Sistema Alumnos UCSE...')" class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center text-slate-300 hover:text-white transition">
+                    <i class="ph ph-arrows-clockwise text-xs"></i>
+                  </button>
+                  <button onclick="openModal('modalMobileSearch')" class="w-7 h-7 rounded-lg bg-white/10 flex items-center justify-center text-slate-300 hover:text-white transition">
+                    <i class="ph ph-magnifying-glass text-xs"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Student Profile Card in Header -->
+              <div class="mt-3 bg-gradient-to-r from-ucse-blue via-ucse-royal to-blue-700 p-3 rounded-2xl border border-white/15 shadow-sm flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                  <div class="relative">
+                    <div class="w-10 h-10 rounded-xl bg-ucse-goldLight border-2 border-ucse-gold flex items-center justify-center text-ucse-navy font-black text-xs shadow">
+                      LG
+                    </div>
+                    <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-400 border-2 border-ucse-blue rounded-full"></span>
+                  </div>
+                  <div class="min-w-0">
+                    <div class="text-[10px] text-blue-200 font-semibold tracking-wider uppercase leading-none">Estudiante Activo</div>
+                    <h3 class="text-white font-extrabold text-xs truncate leading-snug mt-0.5">Lucas Gómez</h3>
+                    <p class="text-[9px] text-ucse-sky truncate font-medium">Ing. en Informática · 5to Año</p>
+                  </div>
+                </div>
+                <div class="text-right pl-2 border-l border-white/15">
+                  <span class="text-[9px] text-slate-200 block leading-none">Créditos Tutor</span>
+                  <span class="text-xs font-black text-ucse-gold mt-0.5 block">12 hrs</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mobile Main Scrollable Area -->
+            <div id="mobileContentContainer" class="flex-1 overflow-y-auto px-3.5 py-3 space-y-3.5 mobile-screen-body pb-20">
+              
+              <!-- VIEW 1: INICIO -->
+              <div id="mobileViewInicio" class="space-y-3.5">
+                
+                <div class="grid grid-cols-1 gap-2">
+                  <button onclick="openModal('modalPeerBooking')" class="w-full bg-gradient-to-r from-ucse-gold to-amber-500 hover:from-amber-400 hover:to-amber-600 text-ucse-navy font-bold px-3.5 py-2.5 rounded-2xl shadow-md flex items-center justify-between transition-all transform active:scale-95 group">
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-xl bg-ucse-navy/10 flex items-center justify-center text-ucse-navy text-lg shrink-0">
+                        <i class="ph-bold ph-users-three"></i>
+                      </div>
+                      <div class="text-left">
+                        <div class="text-xs font-black uppercase tracking-wide text-ucse-navy leading-none">1. Buscar Tutor Par</div>
+                        <div class="text-[10px] font-medium text-slate-900/85 mt-0.5">Alumnos avanzados para rendir materias</div>
+                      </div>
+                    </div>
+                    <i class="ph ph-caret-right text-ucse-navy font-bold group-hover:translate-x-1 transition-transform"></i>
+                  </button>
+
+                  <button onclick="openModal('modalProposal')" class="w-full bg-gradient-to-r from-ucse-royal to-ucse-blue hover:from-blue-700 hover:to-blue-900 text-white font-semibold px-3.5 py-2.5 rounded-2xl shadow flex items-center justify-between transition-all transform active:scale-95 group">
+                    <div class="flex items-center gap-3">
+                      <div class="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center text-ucse-gold text-lg shrink-0">
+                        <i class="ph-bold ph-lightbulb-filament"></i>
+                      </div>
+                      <div class="text-left">
+                        <div class="text-xs font-bold text-white leading-none">2. Postular Idea de TFG</div>
+                        <div class="text-[10px] text-blue-100 font-normal mt-0.5">Conectar con docente director y cupos</div>
+                      </div>
+                    </div>
+                    <i class="ph ph-caret-right text-white font-bold group-hover:translate-x-1 transition-transform"></i>
+                  </button>
+
+                  <button onclick="switchMobileNav('repo')" class="w-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-800 font-semibold px-3.5 py-2 rounded-2xl shadow-sm flex items-center justify-between transition-all transform active:scale-95">
+                    <div class="flex items-center gap-3">
+                      <div class="w-8 h-8 rounded-xl bg-slate-100 flex items-center justify-center text-ucse-royal shrink-0">
+                        <i class="ph ph-books text-base"></i>
+                      </div>
+                      <div class="text-left">
+                        <div class="text-xs font-bold text-slate-800 leading-none">3. Consultar Repositorio TFG</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">450+ tesis aprobadas en UCSE-DASS</div>
+                      </div>
+                    </div>
+                    <span class="text-[9px] bg-slate-100 text-slate-600 font-bold px-2 py-0.5 rounded-md">Ver Catálogo</span>
+                  </button>
+                </div>
+
+                <div class="bg-white rounded-2xl p-3 border border-slate-200/90 shadow-sm">
+                  <div class="flex items-center justify-between mb-2">
+                    <span class="text-[11px] font-extrabold text-ucse-navy flex items-center gap-1.5">
+                      <i class="ph ph-calendar-check text-ucse-royal font-bold"></i>
+                      Próxima Tutoría Confirmada
+                    </span>
+                    <span class="text-[9px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                      Jueves 16:00 hs
+                    </span>
+                  </div>
+
+                  <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-900 border border-amber-200 flex items-center justify-center font-black text-xs shrink-0">
+                        SM
+                      </div>
+                      <div>
+                        <div class="flex items-center gap-1">
+                          <h4 class="text-xs font-bold text-slate-900">Sofía Martínez</h4>
+                          <i class="ph-fill ph-check-circle text-emerald-500 text-xs" title="Tutor Par Validado"></i>
+                        </div>
+                        <p class="text-[10px] text-slate-500">Programación II · Estructuras de Datos</p>
+                      </div>
+                    </div>
+                    <button onclick="showToast('Enlace de Google Meet copiado para la sesión de tutoría')" class="px-2.5 py-1.5 rounded-lg bg-ucse-navy text-white text-[10px] font-bold shadow hover:bg-ucse-blue transition shrink-0 flex items-center gap-1">
+                      <i class="ph ph-video-camera"></i>
+                      <span>Entrar</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="bg-gradient-to-br from-slate-900 to-ucse-navy text-white rounded-2xl p-3 shadow-md">
+                  <div class="flex items-center justify-between mb-1.5">
+                    <span class="text-[10px] font-mono tracking-wider text-ucse-sky uppercase font-semibold">Mi Expediente TFG</span>
+                    <span class="text-[9px] bg-amber-400/20 text-amber-300 border border-amber-400/40 px-2 py-0.2 rounded-full font-bold">En Revisión</span>
+                  </div>
+                  <h4 class="text-xs font-bold text-white line-clamp-1">Detección de Anomalías en Redes Campus</h4>
+                  <p class="text-[10px] text-slate-300 mt-0.5">Director asignado: <span class="text-ucse-sky font-semibold">Dra. Ana López</span></p>
+
+                  <div class="grid grid-cols-4 gap-1 mt-2.5 pt-2 border-t border-white/10">
+                    <div class="flex flex-col items-center">
+                      <div class="w-full h-1 rounded-full bg-emerald-400"></div>
+                      <span class="text-[8px] text-emerald-300 mt-1 font-semibold">Idea</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <div class="w-full h-1 rounded-full bg-amber-400"></div>
+                      <span class="text-[8px] text-amber-300 mt-1 font-semibold">Plan</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <div class="w-full h-1 rounded-full bg-white/20"></div>
+                      <span class="text-[8px] text-slate-400 mt-1">Avance</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      <div class="w-full h-1 rounded-full bg-white/20"></div>
+                      <span class="text-[8px] text-slate-400 mt-1">Defensa</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="flex items-center justify-between mb-2 px-1">
+                    <h4 class="text-xs font-extrabold text-ucse-navy tracking-tight uppercase">Tutores Pares Destacados</h4>
+                    <button onclick="switchMobileNav('tutores')" class="text-[10px] text-ucse-royal font-bold hover:underline">Ver catálogo (24)</button>
+                  </div>
+
+                  <div class="space-y-2">
+                    <div class="bg-white p-2.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between gap-2 hover:border-ucse-sky transition">
+                      <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-blue-100 text-blue-900 font-black text-xs flex items-center justify-center shrink-0">
+                          SM
+                        </div>
+                        <div>
+                          <div class="flex items-center gap-1">
+                            <h5 class="text-xs font-bold text-slate-900">Sofía Martínez</h5>
+                            <span class="text-[9px] text-emerald-600 bg-emerald-50 px-1.5 rounded font-bold flex items-center gap-0.5"><i class="ph-fill ph-star text-amber-500"></i> 4.9</span>
+                          </div>
+                          <p class="text-[10px] text-slate-600 font-medium">Programación II & Algoritmos</p>
+                        </div>
+                      </div>
+                      <button onclick="openBookingFor('Sofía Martínez', 'Programación II')" class="px-2.5 py-1 rounded-lg bg-ucse-blue text-white text-[10px] font-bold hover:bg-ucse-navy transition shadow-sm shrink-0">
+                        Agendar
+                      </button>
+                    </div>
+
+                    <div class="bg-white p-2.5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between gap-2 hover:border-ucse-sky transition">
+                      <div class="flex items-center gap-2.5">
+                        <div class="w-9 h-9 rounded-xl bg-purple-100 text-purple-900 font-black text-xs flex items-center justify-center shrink-0">
+                          MF
+                        </div>
+                        <div>
+                          <div class="flex items-center gap-1">
+                            <h5 class="text-xs font-bold text-slate-900">Martín Fernández</h5>
+                            <span class="text-[9px] text-emerald-600 bg-emerald-50 px-1.5 rounded font-bold flex items-center gap-0.5"><i class="ph-fill ph-star text-amber-500"></i> 5.0</span>
+                          </div>
+                          <p class="text-[10px] text-slate-600 font-medium">Investigación Operativa</p>
+                        </div>
+                      </div>
+                      <button onclick="openBookingFor('Martín Fernández', 'Investigación Operativa')" class="px-2.5 py-1 rounded-lg bg-ucse-blue text-white text-[10px] font-bold hover:bg-ucse-navy transition shadow-sm shrink-0">
+                        Agendar
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- VIEW 2: TUTORES PARES -->
+              <div id="mobileViewTutores" class="hidden space-y-3">
+                <div class="bg-white p-3 rounded-2xl border border-slate-200">
+                  <h4 class="text-xs font-bold text-ucse-navy mb-1">Directorio de Tutores Pares</h4>
+                  <p class="text-[10px] text-slate-500 mb-2">Compañeros avanzados con aprobación académica de la cátedra</p>
+                  <input type="text" id="mobileTutorSearchInput" onkeyup="filterMobileTutors()" placeholder="Buscar por materia o nombre..." 
+                         class="w-full text-xs p-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-ucse-royal">
+                </div>
+
+                <div id="mobileTutorsList" class="space-y-2"></div>
+              </div>
+
+              <!-- VIEW 3: REPOSITORIO TFG -->
+              <div id="mobileViewRepo" class="hidden space-y-3">
+                <div class="bg-white p-3 rounded-2xl border border-slate-200">
+                  <div class="flex items-center justify-between mb-1">
+                    <h4 class="text-xs font-bold text-ucse-navy">Tesis Aprobadas DASS</h4>
+                    <span class="text-[9px] bg-blue-50 text-ucse-blue font-bold px-2 py-0.5 rounded">450+ TFG</span>
+                  </div>
+                  <p class="text-[10px] text-slate-500 mb-2">Consulta antecedentes y metodologías desde tu celular</p>
+                  <input type="text" id="mobileRepoSearchInput" onkeyup="filterMobileRepo()" placeholder="Buscar tema o tesista..." 
+                         class="w-full text-xs p-2 rounded-xl bg-slate-50 border border-slate-200 focus:outline-none focus:border-ucse-royal">
+                </div>
+
+                <div id="mobileRepoList" class="space-y-2"></div>
+              </div>
+
+              <!-- VIEW 4: PERFIL -->
+              <div id="mobileViewPerfil" class="hidden space-y-3">
+                <div class="bg-white p-4 rounded-2xl border border-slate-200 text-center">
+                  <div class="w-16 h-16 rounded-2xl bg-ucse-goldLight border-2 border-ucse-gold text-ucse-navy font-black text-xl flex items-center justify-center mx-auto shadow-sm">
+                    LG
+                  </div>
+                  <h4 class="text-sm font-extrabold text-slate-900 mt-2">Lucas Gómez</h4>
+                  <p class="text-xs text-slate-500">Legajo UCSE: 2021-INF-0482</p>
+                  <span class="inline-block mt-1 text-[10px] bg-emerald-50 text-emerald-700 font-bold px-2.5 py-0.5 rounded-full border border-emerald-200">
+                    Condición: Alumno Regular 5° Año
+                  </span>
+
+                  <div class="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-slate-100 text-left">
+                    <div class="bg-slate-50 p-2.5 rounded-xl">
+                      <span class="text-[9px] text-slate-400 uppercase font-bold block">Tutorías Tomadas</span>
+                      <span class="text-sm font-black text-ucse-navy">8 sesiones</span>
+                    </div>
+                    <div class="bg-slate-50 p-2.5 rounded-xl">
+                      <span class="text-[9px] text-slate-400 uppercase font-bold block">Horas Acreditadas</span>
+                      <span class="text-sm font-black text-ucse-royal">12 horas</span>
+                    </div>
+                  </div>
+
+                  <button onclick="openModal('modalBecomeTutor')" class="w-full mt-3 bg-ucse-navy hover:bg-ucse-blue text-white text-xs font-bold py-2 rounded-xl transition shadow">
+                    Postularme como Tutor Par
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Mobile App Fixed Bottom Navigation Bar -->
+            <div class="absolute bottom-0 left-0 right-0 h-16 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 flex items-center justify-around text-xs z-30 shadow-lg">
+              <button onclick="switchMobileNav('inicio')" id="navMobileInicio" class="flex flex-col items-center gap-0.5 text-ucse-blue font-extrabold transition">
+                <i class="ph-fill ph-house text-xl"></i>
+                <span class="text-[9px]">Inicio</span>
+              </button>
+              <button onclick="switchMobileNav('tutores')" id="navMobileTutores" class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-ucse-blue font-medium transition">
+                <i class="ph ph-users-three text-xl"></i>
+                <span class="text-[9px]">Tutores</span>
+              </button>
+              <button onclick="switchMobileNav('repo')" id="navMobileRepo" class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-ucse-blue font-medium transition">
+                <i class="ph ph-books text-xl"></i>
+                <span class="text-[9px]">TFG Repo</span>
+              </button>
+              <button onclick="switchMobileNav('perfil')" id="navMobilePerfil" class="flex flex-col items-center gap-0.5 text-slate-400 hover:text-ucse-blue font-medium transition">
+                <i class="ph ph-user text-xl"></i>
+                <span class="text-[9px]">Mi Perfil</span>
+              </button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================================= -->
+      <!-- COLUMNA 2: PROTOTIPO WEB DESKTOP (REPOSITORIO TFG + GESTIÓN DOCENTE)      -->
+      <!-- ========================================================================= -->
+      <section id="desktopColumn" class="xl:col-span-8 flex flex-col items-center">
+        
+        <div class="w-full flex items-center justify-between mb-3 px-2">
+          <div class="flex items-center gap-2 text-slate-300 text-xs font-semibold uppercase tracking-wider">
+            <i class="ph ph-laptop text-ucse-sky text-lg"></i>
+            <span>Portal Web Institucional (Tesistas, Directores & Cátedras)</span>
+          </div>
+          <div class="flex items-center gap-2 text-[11px] bg-slate-900 border border-slate-700 text-slate-300 px-3 py-0.5 rounded-full">
+            <span class="text-ucse-gold font-bold">Lema UCSE:</span>
+            <span class="italic text-slate-400 hidden md:inline">"Si tenés una meta, nosotros somos el camino"</span>
+          </div>
+        </div>
+
+        <div class="w-full bg-slate-900 rounded-3xl shadow-2xl border border-slate-700/80 overflow-hidden ring-1 ring-white/10 flex flex-col min-h-[825px]">
+          
+          <div class="bg-slate-950 px-4 py-2.5 flex items-center justify-between border-b border-slate-800">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-rose-500"></div>
+              <div class="w-3 h-3 rounded-full bg-amber-400"></div>
+              <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+            </div>
+            
+            <div class="bg-slate-900 border border-slate-800 text-slate-400 text-xs px-4 py-1 rounded-xl w-full max-w-lg mx-4 flex items-center justify-between truncate">
+              <div class="flex items-center gap-2 truncate">
+                <i class="ph ph-lock-key text-emerald-400 text-xs"></i>
+                <span class="font-mono text-[11px] text-slate-300">https://mentoria.ucse-dass.edu.ar/dashboard</span>
+              </div>
+              <span class="text-[10px] text-slate-500 font-mono hidden sm:inline">SSL UCSE Jujuy</span>
+            </div>
+
+            <div class="flex items-center gap-3 text-slate-400 text-xs">
+              <i class="ph ph-shield-check text-emerald-400" title="Conexión Segura Red Académica"></i>
+              <i class="ph ph-arrows-clockwise hover:text-white cursor-pointer" onclick="filterRepository()"></i>
+            </div>
+          </div>
+
+          <nav class="bg-gradient-to-r from-ucse-navy via-[#0E3559] to-ucse-blue text-white px-6 py-3.5 border-b border-white/10 flex flex-wrap items-center justify-between gap-4 shadow-sm">
+            <div class="flex items-center gap-3">
+              <div class="h-10 w-10 rounded-2xl bg-white/95 p-1 flex items-center justify-center shadow-md ring-2 ring-white/20">
+                <div class="h-full w-full bg-ucse-navy rounded-xl flex flex-col items-center justify-center font-bold text-[8px] text-white">
+                  <span class="text-ucse-gold text-[11px] font-black">UCSE</span>
+                  <span class="text-[6px] tracking-wider text-slate-300">DASS</span>
+                </div>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-black text-base tracking-tight text-white block leading-none">Mentoría DASS</span>
+                  <span class="bg-amber-400/20 text-amber-300 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full border border-amber-400/30 flex items-center gap-1">
+                    <i class="ph-fill ph-sparkle text-ucse-gold text-xs"></i>
+                    Comunidad de Aprendizaje
+                  </span>
+                </div>
+                <span class="text-[11px] text-blue-200/90 font-medium">Acompañamiento cercano entre estudiantes y docentes en Jujuy</span>
+              </div>
+            </div>
+
+            <!-- Desktop View Switcher Tabs -->
+            <div class="flex items-center bg-black/25 p-1.5 rounded-2xl border border-white/10 text-xs font-semibold backdrop-blur-sm">
+              <button id="deskTabRepo" onclick="switchDesktopView('repo')" class="px-3.5 py-1.5 rounded-xl bg-white text-ucse-navy shadow-sm flex items-center gap-1.5 transition font-bold">
+                <i class="ph-bold ph-books text-ucse-royal"></i>
+                <span>Tesis & Ideas</span>
+              </button>
+              <button id="deskTabTutoresPares" onclick="switchDesktopView('tutoresPares')" class="px-3.5 py-1.5 rounded-xl text-slate-200 hover:text-white transition flex items-center gap-1.5">
+                <i class="ph-bold ph-users-three text-amber-300"></i>
+                <span>Compañeros Tutores</span>
+              </button>
+              <button id="deskTabMentores" onclick="switchDesktopView('mentores')" class="px-3.5 py-1.5 rounded-xl text-slate-200 hover:text-white transition flex items-center gap-1.5">
+                <i class="ph-bold ph-chalkboard-teacher text-ucse-sky"></i>
+                <span>Docentes Guía</span>
+              </button>
+              <button id="deskTabExpediente" onclick="switchDesktopView('expediente')" class="px-3.5 py-1.5 rounded-xl text-slate-200 hover:text-white transition flex items-center gap-1.5">
+                <i class="ph-bold ph-path text-emerald-300"></i>
+                <span>Mi Camino TFG</span>
+              </button>
+            </div>
+
+            <div class="flex items-center gap-2.5 pl-3 border-l border-white/15 bg-white/10 hover:bg-white/15 px-3 py-1.5 rounded-2xl transition cursor-pointer" onclick="switchDesktopView('expediente')" title="Ver mi progreso">
+              <div class="relative">
+                <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-400 to-amber-200 text-ucse-navy font-black flex items-center justify-center text-xs shadow">
+                  LG
+                </div>
+                <span class="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-emerald-400 border-2 border-ucse-navy rounded-full"></span>
+              </div>
+              <div class="text-left text-xs leading-tight">
+                <div class="font-bold text-white flex items-center gap-1">
+                  <span>Lucas Gómez</span>
+                  <i class="ph ph-caret-down text-[10px] text-slate-300"></i>
+                </div>
+                <div class="text-[10px] text-amber-200 font-medium">Ing. Informática · 5° Año</div>
+              </div>
+            </div>
+          </nav>
+
+          <div class="bg-gradient-to-b from-slate-100 via-slate-50 to-slate-100 p-5 flex-1 min-h-[680px] max-h-[735px] overflow-y-auto space-y-4">
+            
+            <div class="bg-gradient-to-r from-blue-900 via-ucse-navy to-slate-900 rounded-3xl p-5 text-white shadow-card-soft border border-white/10 relative overflow-hidden">
+              <div class="absolute -right-8 -bottom-8 w-44 h-44 rounded-full bg-gradient-to-br from-ucse-sky/20 to-ucse-gold/10 blur-2xl pointer-events-none"></div>
+              <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 relative z-10">
+                <div class="space-y-1">
+                  <div class="flex items-center gap-2">
+                    <span class="px-2.5 py-0.5 rounded-full bg-amber-400/20 text-ucse-gold text-[10px] font-black tracking-wide border border-amber-400/30 uppercase flex items-center gap-1">
+                      <i class="ph-bold ph-hand-waving"></i> ¡Hola de nuevo, Lucas!
+                    </span>
+                    <span class="text-[11px] text-slate-300">¿Qué meta querés avanzar hoy en la facultad?</span>
+                  </div>
+                  <h2 class="text-lg font-black text-white tracking-tight">
+                    Tu espacio para no estudiar solo y llegar a tu título acompañado.
+                  </h2>
+                  <p class="text-xs text-slate-300 max-w-2xl leading-relaxed">
+                    Consultá dudas con compañeros que ya promocionaron las materias, coordiná con directores de tesis y explorá trabajos finales aprobados de tu carrera en San Salvador de Jujuy.
+                  </p>
+                </div>
+
+                <div class="flex flex-wrap sm:flex-nowrap items-center gap-2 shrink-0">
+                  <button onclick="switchDesktopView('tutoresPares')" class="flex-1 sm:flex-initial bg-amber-400 hover:bg-amber-300 text-ucse-navy px-3.5 py-2 rounded-2xl text-xs font-black shadow-md hover:shadow-lg transition flex items-center justify-center gap-1.5">
+                    <i class="ph-bold ph-users-three text-sm"></i>
+                    <span>Buscar Tutor Par</span>
+                  </button>
+                  <button onclick="openModal('modalProposal')" class="flex-1 sm:flex-initial bg-white/15 hover:bg-white/25 text-white border border-white/20 px-3.5 py-2 rounded-2xl text-xs font-bold transition flex items-center justify-center gap-1.5 backdrop-blur-sm">
+                    <i class="ph-bold ph-lightbulb-filament text-amber-300 text-sm"></i>
+                    <span>Postular mi TFG</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- DESKTOP VIEW 1: REPOSITORIO TFG -->
+            <!-- ============================================================== -->
+            <div id="desktopSectionRepo" class="space-y-4">
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="bg-white p-3.5 rounded-2xl border border-slate-200/90 shadow-sm flex items-center gap-3.5 hover:shadow-md transition">
+                  <div class="w-11 h-11 rounded-2xl bg-blue-50 text-ucse-royal border border-blue-100 flex items-center justify-center text-xl shrink-0">
+                    <i class="ph-bold ph-books"></i>
+                  </div>
+                  <div>
+                    <span class="text-slate-500 text-[10px] uppercase font-bold tracking-wider">Tesis Aprobadas</span>
+                    <h4 class="text-base font-black text-slate-900 leading-none mt-0.5">458 Trabajos</h4>
+                    <span class="text-[9px] text-emerald-600 font-semibold mt-0.5 block">Disponibles para leer</span>
+                  </div>
+                </div>
+
+                <div class="bg-white p-3.5 rounded-2xl border border-slate-200/90 shadow-sm flex items-center gap-3.5 hover:shadow-md transition">
+                  <div class="w-11 h-11 rounded-2xl bg-amber-50 text-amber-600 border border-amber-100 flex items-center justify-center text-xl shrink-0">
+                    <i class="ph-bold ph-file-pdf"></i>
+                  </div>
+                  <div>
+                    <span class="text-slate-500 text-[10px] uppercase font-bold tracking-wider">Guías y Resúmenes</span>
+                    <h4 class="text-base font-black text-slate-900 leading-none mt-0.5">3.2k Consultas</h4>
+                    <span class="text-[9px] text-amber-700 font-semibold mt-0.5 block">Con estructura e índices</span>
+                  </div>
+                </div>
+
+                <div class="bg-white p-3.5 rounded-2xl border border-slate-200/90 shadow-sm flex items-center gap-3.5 hover:shadow-md transition">
+                  <div class="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-700 border border-emerald-100 flex items-center justify-center text-xl shrink-0">
+                    <i class="ph-bold ph-chalkboard-teacher"></i>
+                  </div>
+                  <div>
+                    <span class="text-slate-500 text-[10px] uppercase font-bold tracking-wider">Docentes Guía</span>
+                    <h4 class="text-base font-black text-slate-900 leading-none mt-0.5">28 Profesores</h4>
+                    <span class="text-[9px] text-emerald-700 font-semibold mt-0.5 block">Con cupos abiertos</span>
+                  </div>
+                </div>
+
+                <div class="bg-white p-3.5 rounded-2xl border border-slate-200/90 shadow-sm flex items-center gap-3.5 hover:shadow-md transition">
+                  <div class="w-11 h-11 rounded-2xl bg-purple-50 text-purple-700 border border-purple-100 flex items-center justify-center text-xl shrink-0">
+                    <i class="ph-fill ph-bookmark-simple"></i>
+                  </div>
+                  <div>
+                    <span class="text-slate-500 text-[10px] uppercase font-bold tracking-wider">Tus Referencias</span>
+                    <h4 id="savedTfgCounter" class="text-base font-black text-slate-900 leading-none mt-0.5">3 tesis</h4>
+                    <span class="text-[9px] text-purple-700 font-semibold mt-0.5 block">Guardadas en tu lista</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-card-soft space-y-3">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <h3 class="text-sm font-extrabold text-ucse-navy flex items-center gap-1.5">
+                        <i class="ph-bold ph-lightbulb text-amber-500"></i>
+                        Inspirate para armar tu proyecto final
+                      </h3>
+                      <span class="bg-blue-50 text-ucse-royal text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-200">
+                        Repositorio Digital DASS
+                      </span>
+                    </div>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                      Leé cómo otros egresados de Jujuy estructuraron sus objetivos, hipótesis y metodologías autorizadas.
+                    </p>
+                  </div>
+
+                  <div class="relative w-full lg:w-96">
+                    <i class="ph ph-magnifying-glass absolute left-3.5 top-3 text-slate-400 text-sm"></i>
+                    <input type="text" id="desktopGlobalSearch" onkeyup="filterRepository()" 
+                           placeholder="Buscá por tema (ej: litio, redes, algoritmos...)" 
+                           class="w-full bg-slate-50 hover:bg-slate-100/70 focus:bg-white text-slate-800 text-xs pl-10 pr-4 py-2.5 rounded-2xl border border-slate-200 focus:outline-none focus:border-ucse-blue transition shadow-inner">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 pt-2 border-t border-slate-100">
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1 flex items-center gap-1">
+                      <i class="ph ph-graduation-cap text-ucse-royal"></i>
+                      <span>Carrera</span>
+                    </label>
+                    <select id="filterCareer" onchange="filterRepository()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl p-2 font-medium text-slate-700 focus:outline-none focus:border-ucse-blue cursor-pointer">
+                      <option value="ALL">Todas las carreras de la sede</option>
+                      <option value="Ingeniería Informática">Ingeniería Informática</option>
+                      <option value="Lic. en Administración">Lic. en Administración</option>
+                      <option value="Abogacía">Abogacía</option>
+                      <option value="Lic. en Psicología">Lic. en Psicología</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1 flex items-center gap-1">
+                      <i class="ph ph-calendar text-ucse-royal"></i>
+                      <span>Año de Defensa</span>
+                    </label>
+                    <select id="filterYear" onchange="filterRepository()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl p-2 font-medium text-slate-700 focus:outline-none focus:border-ucse-blue cursor-pointer">
+                      <option value="ALL">Todos los años (2022 - 2026)</option>
+                      <option value="2026">2026 (Más recientes)</option>
+                      <option value="2025">2025</option>
+                      <option value="2024">2024</option>
+                      <option value="2023">2023</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1 flex items-center gap-1">
+                      <i class="ph ph-compass text-ucse-royal"></i>
+                      <span>Área Temática</span>
+                    </label>
+                    <select id="filterTopic" onchange="filterRepository()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl p-2 font-medium text-slate-700 focus:outline-none focus:border-ucse-blue cursor-pointer">
+                      <option value="ALL">Todas las áreas</option>
+                      <option value="Inteligencia Artificial">Inteligencia Artificial</option>
+                      <option value="Ciberseguridad">Ciberseguridad & Redes</option>
+                      <option value="Sistemas de Gestión">Sistemas de Gestión & ERP</option>
+                      <option value="Desarrollo Regional">Desarrollo Regional Jujuy</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1 flex items-center gap-1">
+                      <i class="ph ph-star text-ucse-royal"></i>
+                      <span>Calificación</span>
+                    </label>
+                    <select id="filterGrade" onchange="filterRepository()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl p-2 font-medium text-slate-700 focus:outline-none focus:border-ucse-blue cursor-pointer">
+                      <option value="ALL">Todas las notas</option>
+                      <option value="Sobresaliente">10 - Sobresaliente (Con Mención)</option>
+                      <option value="Distinguido">9 - Distinguido</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div id="tfgCardsContainer" class="space-y-3"></div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- DESKTOP VIEW 2: MENTORES DOCENTES -->
+            <!-- ============================================================== -->
+            <div id="desktopSectionMentores" class="hidden space-y-4">
+              
+              <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-card-soft flex flex-wrap items-center justify-between gap-3">
+                <div class="max-w-xl">
+                  <div class="flex items-center gap-2 mb-0.5">
+                    <h3 class="text-sm font-extrabold text-ucse-navy flex items-center gap-1.5">
+                      <i class="ph-bold ph-chalkboard-teacher text-ucse-royal text-base"></i>
+                      Directores y Mentores de Proyecto
+                    </h3>
+                    <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-extrabold px-2 py-0.5 rounded-full flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                      Cupos 2026 Disponibles
+                    </span>
+                  </div>
+                  <p class="text-xs text-slate-500">
+                    Conocé las líneas en las que investiga cada profesor y enviá tu idea preliminar en pocos clics.
+                  </p>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                  <button onclick="openModal('modalProposal')" class="bg-ucse-royal hover:bg-ucse-blue text-white text-xs font-bold px-4 py-2 rounded-2xl transition shadow flex items-center gap-1.5">
+                    <i class="ph-bold ph-paper-plane-tilt"></i>
+                    <span>Postular mi Idea de TFG</span>
+                  </button>
+                </div>
+              </div>
+
+              <div id="mentoresGridContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- DESKTOP VIEW 3: TUTORÍAS DE PARES -->
+            <!-- ============================================================== -->
+            <div id="desktopSectionTutoresPares" class="hidden space-y-4">
+              
+              <div class="bg-gradient-to-r from-amber-500 via-amber-400 to-amber-300 rounded-3xl p-4 text-ucse-navy shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3 border border-amber-300">
+                <div class="flex items-center gap-3">
+                  <div class="w-11 h-11 rounded-2xl bg-ucse-navy text-amber-300 flex items-center justify-center text-xl shrink-0 shadow-sm">
+                    <i class="ph-bold ph-hand-heart"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-black text-ucse-navy flex items-center gap-1.5">
+                      Red de Compañeros Tutores (Peer Tutoring UCSE)
+                    </h3>
+                    <p class="text-xs text-slate-800 font-medium">
+                      Estudiá en equipo con alumnos avanzados que cursaron con tus mismos profesores y te explican paso a paso.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2 shrink-0">
+                  <button onclick="openModal('modalBecomeTutor')" class="bg-ucse-navy hover:bg-ucse-blue text-white text-xs font-extrabold px-4 py-2 rounded-2xl transition shadow flex items-center gap-1.5">
+                    <i class="ph-bold ph-user-plus text-amber-300"></i>
+                    <span>Sumarme como Tutor Par</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                <div class="bg-white p-3 rounded-2xl border border-slate-200/90 shadow-sm flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center text-lg shrink-0">
+                    <i class="ph-bold ph-users-three"></i>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Compañeros activos</span>
+                    <h4 class="text-sm font-black text-slate-900 leading-none mt-0.5">24 Tutores</h4>
+                  </div>
+                </div>
+
+                <div class="bg-white p-3 rounded-2xl border border-slate-200/90 shadow-sm flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-xl bg-blue-50 text-ucse-royal flex items-center justify-center text-lg shrink-0">
+                    <i class="ph-bold ph-book-open"></i>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Cátedras listas</span>
+                    <h4 class="text-sm font-black text-slate-900 leading-none mt-0.5">18 Materias</h4>
+                  </div>
+                </div>
+
+                <div class="bg-white p-3 rounded-2xl border border-slate-200/90 shadow-sm flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center text-lg shrink-0">
+                    <i class="ph-bold ph-clock-countdown"></i>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Horas de apoyo</span>
+                    <h4 class="text-sm font-black text-slate-900 leading-none mt-0.5">86 horas este mes</h4>
+                  </div>
+                </div>
+
+                <div class="bg-white p-3 rounded-2xl border border-slate-200/90 shadow-sm flex items-center gap-3">
+                  <div class="w-9 h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center text-lg shrink-0">
+                    <i class="ph-bold ph-certificate"></i>
+                  </div>
+                  <div>
+                    <span class="text-slate-400 text-[10px] uppercase font-bold tracking-wider">Reconocimiento</span>
+                    <h4 class="text-sm font-black text-slate-900 leading-none mt-0.5">Créditos de Extensión</h4>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-card-soft space-y-3">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+                  <div>
+                    <h4 class="text-sm font-bold text-ucse-navy flex items-center gap-1.5">
+                      <i class="ph-bold ph-magnifying-glass text-ucse-royal"></i>
+                      ¿Qué materia necesitás preparar?
+                    </h4>
+                    <p class="text-xs text-slate-500">Filtrá por la cátedra que estás cursando o por el horario que te quede más cómodo.</p>
+                  </div>
+                  <div class="relative w-full lg:w-80">
+                    <i class="ph ph-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-xs"></i>
+                    <input type="text" id="desktopPeerSearchInput" onkeyup="filterDesktopTutores()" 
+                           placeholder="Buscar por tema o compañero (ej: SQL, Sofía...)" 
+                           class="w-full text-xs bg-slate-50 hover:bg-slate-100/70 focus:bg-white border border-slate-200 rounded-2xl pl-9 pr-3 py-2 font-medium focus:outline-none focus:border-ucse-blue transition">
+                  </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2 border-t border-slate-100">
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Materia / Cátedra</label>
+                    <select id="desktopPeerSubjectFilter" onchange="filterDesktopTutores()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl p-2 font-medium text-slate-700 focus:outline-none focus:border-ucse-blue cursor-pointer">
+                      <option value="ALL">Todas las materias</option>
+                      <option value="Programación II">Programación II & Algoritmos</option>
+                      <option value="Investigación Operativa">Investigación Operativa</option>
+                      <option value="Bases de Datos">Bases de Datos I y II</option>
+                      <option value="Álgebra">Álgebra y Geometría Analítica</option>
+                      <option value="Sistemas Operativos">Sistemas Operativos</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">¿Dónde te encontrás?</label>
+                    <select id="desktopPeerModalidadFilter" onchange="filterDesktopTutores()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl p-2 font-medium text-slate-700 focus:outline-none focus:border-ucse-blue cursor-pointer">
+                      <option value="ALL">Presencial o Virtual (Cualquiera)</option>
+                      <option value="Presencial">Presencial (Aulas UCSE Jujuy)</option>
+                      <option value="Virtual">Virtual (Google Meet)</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block mb-1">Horario de cursado</label>
+                    <select id="desktopPeerHorarioFilter" onchange="filterDesktopTutores()" class="w-full text-xs bg-slate-50 border border-slate-200 rounded-xl p-2 font-medium text-slate-700 focus:outline-none focus:border-ucse-blue cursor-pointer">
+                      <option value="ALL">Mañana, tarde o noche</option>
+                      <option value="Tarde">Turno Tarde (14:00 a 18:00 hs)</option>
+                      <option value="Vespertino">Turno Noche (18:00 a 21:00 hs)</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-gradient-to-r from-ucse-navy via-[#123E66] to-ucse-blue rounded-3xl p-4 text-white border border-white/10 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex items-center gap-3.5">
+                  <div class="w-12 h-12 rounded-2xl bg-amber-400 text-ucse-navy flex items-center justify-center text-xl shrink-0 font-black shadow">
+                    <i class="ph-bold ph-calendar-check"></i>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="text-[10px] uppercase font-extrabold tracking-wider text-amber-300">Tu próxima sesión agendada</span>
+                      <span class="text-[9px] bg-emerald-400/20 text-emerald-300 border border-emerald-400/40 font-bold px-2 py-0.2 rounded-full">Confirmada</span>
+                    </div>
+                    <h4 class="text-sm font-bold text-white mt-0.5">Programación II: Preparación de Árboles Binarios</h4>
+                    <p class="text-xs text-blue-100">
+                      Con <strong class="text-amber-300">Sofía Martínez</strong> · Jueves 24 de Septiembre, 16:00 hs · Aula 14 (Sede Central)
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2 shrink-0">
+                  <button onclick="showToast('Enlace de Google Meet copiado para la sesión')" class="bg-amber-400 hover:bg-amber-300 text-ucse-navy text-xs font-black px-4 py-2 rounded-2xl transition shadow flex items-center gap-1.5">
+                    <i class="ph-bold ph-video-camera text-sm"></i>
+                    <span>Entrar a la Sala</span>
+                  </button>
+                  <button onclick="showToast('Recordatorio enviado a tu correo @ucse.edu.ar')" class="bg-white/15 hover:bg-white/25 text-white text-xs font-semibold px-3 py-2 rounded-2xl transition border border-white/15 flex items-center gap-1">
+                    <i class="ph ph-bell"></i>
+                    <span>Recordatorio</span>
+                  </button>
+                </div>
+              </div>
+
+              <div id="desktopTutoresGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- DESKTOP VIEW 4: MI CAMINO TFG -->
+            <!-- ============================================================== -->
+            <div id="desktopSectionExpediente" class="hidden space-y-4">
+              <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-card-soft">
+                <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                  <div class="max-w-2xl">
+                    <span class="text-[10px] font-mono text-ucse-royal font-bold uppercase tracking-wider bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+                      Expediente N° 2026-TFG-INF-019
+                    </span>
+                    <h3 class="text-base font-black text-slate-900 mt-1">Detección Temprana de Anomalías en Redes Campus mediante Aprendizaje Profundo</h3>
+                    <p class="text-xs text-slate-500 mt-0.5">
+                      Tesista: <span class="font-bold text-slate-700">Lucas Gómez</span> · Carrera: <span class="font-bold text-slate-700">Ingeniería Informática</span>
+                    </p>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-xs bg-amber-50 text-amber-800 border border-amber-300 font-bold px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                      <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                      <span>Plan de TFG en Revisión</span>
+                    </span>
+                    <span class="text-[10px] text-slate-400 block mt-1">Última actualización: 18 de Septiembre 2026</span>
+                  </div>
+                </div>
+
+                <div class="py-5">
+                  <div class="flex items-center justify-between mb-3 px-1">
+                    <span class="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                      <i class="ph-bold ph-flag-banner text-ucse-royal"></i>
+                      Tu camino hacia la defensa final (Paso 3 de 5)
+                    </span>
+                    <span class="text-xs font-bold text-ucse-royal">60% completado</span>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-5 gap-3 relative">
+                    
+                    <div class="bg-emerald-50/70 p-3 rounded-2xl border-2 border-emerald-400 flex flex-col justify-between">
+                      <div>
+                        <div class="flex items-center justify-between mb-1">
+                          <span class="text-[10px] font-black text-emerald-700 uppercase">1. Idea</span>
+                          <i class="ph-fill ph-check-circle text-emerald-600 text-lg"></i>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-900">Postulación</h4>
+                        <p class="text-[10px] text-slate-600 mt-0.5">Aceptada por tu directora.</p>
+                      </div>
+                      <span class="text-[9px] text-emerald-800 font-medium mt-2">12 Feb 2026</span>
+                    </div>
+
+                    <div class="bg-emerald-50/70 p-3 rounded-2xl border-2 border-emerald-400 flex flex-col justify-between">
+                      <div>
+                        <div class="flex items-center justify-between mb-1">
+                          <span class="text-[10px] font-black text-emerald-700 uppercase">2. Director</span>
+                          <i class="ph-fill ph-check-circle text-emerald-600 text-lg"></i>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-900">Asignación</h4>
+                        <p class="text-[10px] text-slate-600 mt-0.5">Dra. Ana López asignada.</p>
+                      </div>
+                      <span class="text-[9px] text-emerald-800 font-medium mt-2">01 Mar 2026</span>
+                    </div>
+
+                    <div class="bg-amber-50 p-3 rounded-2xl border-2 border-amber-400 shadow-sm flex flex-col justify-between relative ring-4 ring-amber-400/20">
+                      <div>
+                        <div class="flex items-center justify-between mb-1">
+                          <span class="text-[10px] font-black text-amber-800 uppercase flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
+                            3. En Curso
+                          </span>
+                          <i class="ph-bold ph-spinner-gap text-amber-600 animate-spin text-lg"></i>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-900">Dictamen de Plan</h4>
+                        <p class="text-[10px] text-slate-600 mt-0.5">En lectura por el tribunal docente.</p>
+                      </div>
+                      <span class="text-[9px] text-amber-800 font-bold mt-2">Dictamen en proceso</span>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 opacity-60 flex flex-col justify-between">
+                      <div>
+                        <div class="flex items-center justify-between mb-1">
+                          <span class="text-[10px] font-bold text-slate-400 uppercase">4. Redacción</span>
+                          <i class="ph ph-circle text-slate-300 text-lg"></i>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-700">Tutorías y Avance</h4>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Revisión de capítulos.</p>
+                      </div>
+                      <span class="text-[9px] text-slate-400 mt-2">Octubre 2026</span>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-200 opacity-60 flex flex-col justify-between">
+                      <div>
+                        <div class="flex items-center justify-between mb-1">
+                          <span class="text-[10px] font-bold text-slate-400 uppercase">5. Graduación</span>
+                          <i class="ph ph-graduation-cap text-slate-300 text-lg"></i>
+                        </div>
+                        <h4 class="text-xs font-bold text-slate-700">Defensa Oral</h4>
+                        <p class="text-[10px] text-slate-400 mt-0.5">Tribunal presencial en DASS.</p>
+                      </div>
+                      <span class="text-[9px] text-slate-400 mt-2">Diciembre 2026</span>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="bg-slate-50 p-4 rounded-3xl border border-slate-200/90">
+                  <div class="flex items-center justify-between mb-3">
+                    <h4 class="text-xs font-black text-slate-900 flex items-center gap-2">
+                      <i class="ph-bold ph-chats-circle text-ucse-royal text-base"></i>
+                      <span>Canal directo con tu Directora (Dra. Ana López)</span>
+                    </h4>
+                    <span class="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-bold border border-emerald-200">
+                      En línea
+                    </span>
+                  </div>
+
+                  <div class="space-y-2.5 text-xs">
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-xs flex items-start gap-3">
+                      <div class="w-8 h-8 rounded-xl bg-blue-100 text-ucse-royal font-black text-xs flex items-center justify-center shrink-0">
+                        AL
+                      </div>
+                      <div class="flex-1">
+                        <div class="flex items-center justify-between mb-1">
+                          <span class="font-extrabold text-slate-900">Dra. Ana López</span>
+                          <span class="text-[10px] text-slate-400">14 Sep 2026, 11:20 hs</span>
+                        </div>
+                        <p class="text-slate-600 text-[11px] leading-relaxed">
+                          "Hola Lucas, revisé el borrador que subiste. El enfoque para tráfico de red es excelente. Te recomiendo que mires en el buscador de la plataforma la tesis de Elena Ruiz (2025) para guiarte en el diseño de las tablas de métricas de precisión."
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-3 flex gap-2">
+                    <input type="text" placeholder="Escribile una consulta a tu directora o adjuntá un nuevo archivo..." 
+                           class="flex-1 text-xs p-3 rounded-2xl border border-slate-200 bg-white focus:outline-none focus:border-ucse-blue transition">
+                    <button onclick="showToast('Mensaje enviado a tu directora de TFG')" class="bg-ucse-royal hover:bg-ucse-blue text-white text-xs font-black px-4 py-2 rounded-2xl transition shadow flex items-center gap-1.5 shrink-0">
+                      <i class="ph-bold ph-paper-plane-right"></i>
+                      <span>Enviar</span>
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- MODALES INTERACTIVOS -->
+  <!-- ========================================================================= -->
+
+  <!-- MODAL 1: Solicitar Sesión con Tutor Par -->
+  <div id="modalPeerBooking" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 transform transition-all">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-ucse-goldLight text-ucse-navy flex items-center justify-center font-bold">
+            <i class="ph-bold ph-calendar-plus text-xl"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-ucse-navy">Agendar Tutoría entre Pares</h3>
+            <p class="text-[10px] text-slate-500">Acompañamiento académico en cátedras regulares</p>
+          </div>
+        </div>
+        <button onclick="closeModal('modalPeerBooking')" class="text-slate-400 hover:text-slate-600 p-1">
+          <i class="ph ph-x text-xl"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleBookingSubmit(event)" class="space-y-3">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Tutor Par Asignado</label>
+          <input type="text" id="bookingTutorName" value="Sofía Martínez (Cátedra Programación II)" readonly 
+                 class="w-full bg-slate-100 text-slate-800 text-xs font-semibold p-2.5 rounded-xl border border-slate-200">
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Día de Encuentro</label>
+            <input type="date" id="bookingDateInput" required class="w-full text-xs p-2.5 rounded-xl border border-slate-300 focus:border-ucse-blue focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">Franja Horaria</label>
+            <select class="w-full text-xs p-2.5 rounded-xl border border-slate-300 focus:border-ucse-blue focus:outline-none">
+              <option>16:00 - 17:00 hs</option>
+              <option>17:30 - 18:30 hs</option>
+              <option>19:00 - 20:00 hs (Vespertino)</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Modalidad Preferida</label>
+          <div class="grid grid-cols-2 gap-2">
+            <label class="flex items-center gap-2 text-xs p-2.5 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition">
+              <input type="radio" name="modalidad" checked class="text-ucse-blue">
+              <span>Presencial (Aulas DASS)</span>
+            </label>
+            <label class="flex items-center gap-2 text-xs p-2.5 border border-slate-200 rounded-xl cursor-pointer hover:bg-slate-50 transition">
+              <input type="radio" name="modalidad" class="text-ucse-blue">
+              <span>Virtual (Google Meet)</span>
+            </label>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">Contenido o ejercicios a resolver</label>
+          <textarea rows="2.5" required placeholder="Ej: Ejercicios de árboles binarios de búsqueda y punteros dobles..." 
+                    class="w-full text-xs p-2.5 rounded-xl border border-slate-300 focus:border-ucse-blue focus:outline-none"></textarea>
+        </div>
+
+        <div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeModal('modalPeerBooking')" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-100">
+            Cancelar
+          </button>
+          <button type="submit" class="bg-ucse-navy hover:bg-ucse-blue text-white text-xs font-bold px-5 py-2.5 rounded-xl shadow transition">
+            Confirmar Reserva
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Postular Idea de TFG al Docente -->
+  <div id="modalProposal" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-200 transform transition-all">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-4">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-ucse-skyLight text-ucse-blue flex items-center justify-center font-bold">
+            <i class="ph-bold ph-lightbulb-filament text-xl"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-sm text-ucse-navy">Postular Idea de Trabajo Final (TFG)</h3>
+            <p class="text-[10px] text-slate-500">Solicitud directa de cupo y tutoría de proyecto</p>
+          </div>
+        </div>
+        <button onclick="closeModal('modalProposal')" class="text-slate-400 hover:text-slate-600 p-1">
+          <i class="ph ph-x text-xl"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleProposalSubmit(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Docente Director Destinatario</label>
+          <select id="proposalDirectorSelect" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-ucse-blue focus:outline-none">
+            <option value="Dra. Ana López">Dra. Ana López (Inteligencia Artificial & Optimización · 2 cupos libres)</option>
+            <option value="Dr. Martín Fernández">Dr. Martín Fernández (Ciberseguridad & Auditoría · 3 cupos libres)</option>
+            <option value="Ing. Carlos Rossi">Ing. Carlos Rossi (Arquitectura Cloud & IoT · 1 cupo libre)</option>
+            <option value="Lic. Marcela Morales">Lic. Marcela Morales (Sistemas ERP & Gestión · 2 cupos libres)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Título Tentativo del Proyecto de Grado</label>
+          <input type="text" id="proposalTitleInput" required placeholder="Ej: Plataforma descentralizada para trazabilidad de..." 
+                 class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-ucse-blue focus:outline-none">
+        </div>
+
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Problema que resuelve y justificación técnica</label>
+          <textarea rows="3" required placeholder="Describe brevemente el alcance para la región de Jujuy, tecnologías a emplear y motivación..." 
+                    class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-ucse-blue focus:outline-none"></textarea>
+        </div>
+
+        <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-[11px] text-ucse-blue flex items-start gap-2">
+          <i class="ph-fill ph-info text-base shrink-0 mt-0.5"></i>
+          <span>Al enviar la postulación, se generará una entrada preliminar en tu expediente virtual y el docente dispondrá de 5 días hábiles para dar respuesta según el reglamento de TFG de UCSE.</span>
+        </div>
+
+        <div class="pt-2 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" onclick="closeModal('modalProposal')" class="px-4 py-2 rounded-xl font-semibold text-slate-500 hover:bg-slate-100">
+            Cancelar
+          </button>
+          <button type="submit" class="bg-ucse-royal hover:bg-ucse-blue text-white font-bold px-5 py-2.5 rounded-xl shadow transition">
+            Enviar Postulación Oficial
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 3: Ficha Técnica TFG -->
+  <div id="modalTfgSheet" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 shadow-2xl border border-slate-200 transform transition-all max-h-[90vh] overflow-y-auto">
+      
+      <div class="flex items-start justify-between border-b border-slate-100 pb-3 mb-3">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span id="tfgModalBadge" class="bg-blue-50 text-ucse-royal text-[10px] font-bold px-2.5 py-0.5 rounded-md border border-blue-200">
+              Ingeniería Informática · 2025
+            </span>
+            <span id="tfgModalGrade" class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-0.5 rounded-md border border-emerald-200">
+              Calificación: 10 (Sobresaliente)
+            </span>
+          </div>
+          <h3 id="tfgModalTitle" class="font-extrabold text-base text-slate-900 leading-snug">
+            Título del Trabajo Final
+          </h3>
+        </div>
+        <button onclick="closeModal('modalTfgSheet')" class="text-slate-400 hover:text-slate-600 p-1">
+          <i class="ph ph-x text-xl"></i>
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 bg-slate-50 p-3 rounded-2xl border border-slate-100">
+          <div>
+            <span class="text-slate-400 block text-[9px] uppercase font-bold tracking-wider">Autor / Egresado</span>
+            <span id="tfgModalAuthor" class="font-bold text-slate-800 text-xs">Elena Ruiz</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[9px] uppercase font-bold tracking-wider">Director / Mentor</span>
+            <span id="tfgModalDirector" class="font-bold text-ucse-blue text-xs">Dra. Ana López</span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[9px] uppercase font-bold tracking-wider">Sede & Repositorio</span>
+            <span class="font-bold text-slate-700 text-xs">DASS · Colección Digital</span>
+          </div>
+        </div>
+
+        <div>
+          <span class="text-slate-800 font-bold block mb-1">Resumen Ejecutivo (Abstract)</span>
+          <p id="tfgModalAbstract" class="text-slate-600 leading-relaxed bg-slate-50 p-3.5 rounded-2xl border border-slate-100 text-[11px]">
+            Descripción detallada...
+          </p>
+        </div>
+
+        <div>
+          <span class="text-slate-800 font-bold block mb-1.5">Estructura del Informe Final</span>
+          <div class="grid grid-cols-2 gap-2 text-[10px]">
+            <div class="p-2 rounded-xl bg-slate-100 text-slate-700 flex items-center gap-1.5">
+              <i class="ph ph-file-text text-ucse-royal"></i>
+              <span>Capítulo 1: Marco Teórico y Contexto Jujuy</span>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-100 text-slate-700 flex items-center gap-1.5">
+              <i class="ph ph-cpu text-ucse-royal"></i>
+              <span>Capítulo 2: Arquitectura del Sistema</span>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-100 text-slate-700 flex items-center gap-1.5">
+              <i class="ph ph-chart-line-up text-ucse-royal"></i>
+              <span>Capítulo 3: Validación Experimental</span>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-100 text-slate-700 flex items-center gap-1.5">
+              <i class="ph ph-check-square-offset text-ucse-royal"></i>
+              <span>Capítulo 4: Conclusiones y Futuras Líneas</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <button onclick="copyApaCitation()" class="px-3 py-1.5 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-100 font-bold text-xs flex items-center gap-1.5 transition">
+              <i class="ph ph-quotes text-ucse-royal"></i>
+              <span>Copiar Cita APA 7</span>
+            </button>
+            <button onclick="toggleBookmarkCurrentTfg()" id="btnBookmarkModal" class="px-3 py-1.5 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-100 font-bold text-xs flex items-center gap-1.5 transition">
+              <i class="ph ph-bookmark-simple"></i>
+              <span>Guardar Referencia</span>
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="closeModal('modalTfgSheet')" class="px-4 py-1.5 rounded-xl text-xs font-semibold text-slate-500 hover:bg-slate-100">
+              Cerrar
+            </button>
+            <button onclick="showToast('Descargando Resumen Metodológico autorizado en formato PDF...')" class="bg-ucse-navy hover:bg-ucse-blue text-white text-xs font-bold px-4 py-2 rounded-xl shadow flex items-center gap-1.5 transition">
+              <i class="ph ph-file-pdf"></i>
+              <span>Descargar PDF</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 4: Postularse como Tutor Par -->
+  <div id="modalBecomeTutor" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
+        <h3 class="font-bold text-sm text-ucse-navy">Postulación a Tutor Par DASS</h3>
+        <button onclick="closeModal('modalBecomeTutor')" class="text-slate-400 hover:text-slate-600">
+          <i class="ph ph-x text-lg"></i>
+        </button>
+      </div>
+      <p class="text-xs text-slate-600 mb-3">
+        Los estudiantes con promedio superior a 7 y materias promocionadas pueden acreditar hasta 40 horas de extensión universitaria apoyando a ingresantes.
+      </p>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Materia en la que deseas dar apoyo</label>
+          <input type="text" value="Programación I / Algoritmos" class="w-full p-2.5 rounded-xl border border-slate-300 font-medium">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">Nota final obtenida en la materia</label>
+          <input type="number" value="9" min="7" max="10" class="w-full p-2.5 rounded-xl border border-slate-300">
+        </div>
+        <button onclick="closeModal('modalBecomeTutor'); showToast('¡Solicitud enviada a la Secretaría Académica DASS!')" class="w-full bg-ucse-navy text-white font-bold py-2.5 rounded-xl hover:bg-ucse-blue transition">
+          Enviar Postulación de Tutor
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Toast Feedback -->
+  <div id="toastContainer" class="fixed bottom-6 right-6 z-50 transform transition-all duration-300 translate-y-24 opacity-0 pointer-events-none">
+    <div class="bg-ucse-navy text-white px-4 py-3 rounded-2xl shadow-2xl border border-ucse-gold/40 flex items-center gap-3">
+      <div class="w-8 h-8 rounded-xl bg-ucse-gold text-ucse-navy flex items-center justify-center font-black text-sm shrink-0">
+        <i class="ph-bold ph-check"></i>
+      </div>
+      <div id="toastMessage" class="text-xs font-semibold tracking-wide">
+        Acción ejecutada correctamente
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const MOCK_TFGS = [
+      {
+        id: 'tfg-1',
+        title: 'Optimización de procesos en logística regional mediante algoritmos genéticos',
+        author: 'Elena Ruiz',
+        director: 'Dra. Ana López',
+        year: '2025',
+        career: 'Ingeniería Informática',
+        topic: 'Inteligencia Artificial',
+        grade: 'Sobresaliente',
+        abstract: 'Este trabajo final aborda el ruteo vehicular adaptado a la topografía de la Quebrada de Humahuaca (Jujuy), utilizando computación evolutiva para minimizar tiempos de distribución y consumo de combustible en un 23% comprobado.'
+      },
+      {
+        id: 'tfg-2',
+        title: 'Marco de auditoría de ciberseguridad para entidades financieras públicas de Jujuy',
+        author: 'Pablo Valdiviezo',
+        director: 'Dr. Martín Fernández',
+        year: '2024',
+        career: 'Ingeniería Informática',
+        topic: 'Ciberseguridad',
+        grade: 'Sobresaliente',
+        abstract: 'Implementación de un framework de testeo de vulnerabilidades y hardening conforme a las normativas de seguridad de la información del BCRA, evaluado en infraestructuras bancarias de la provincia.'
+      },
+      {
+        id: 'tfg-3',
+        title: 'Plataforma distribuida para trazabilidad de la cadena de valor de litio en la Puna',
+        author: 'Florencia Morales',
+        director: 'Ing. Carlos Rossi',
+        year: '2024',
+        career: 'Ingeniería Informática',
+        topic: 'Sistemas de Gestión',
+        grade: 'Distinguido',
+        abstract: 'Arquitectura basada en registros distribuidos y nodos IoT en salares para certificar huella de agua y pureza química de exportación desde Jujuy hacia mercados globales.'
+      },
+      {
+        id: 'tfg-4',
+        title: 'Impacto del comercio electrónico en el ecosistema de PYMES comerciales de San Salvador',
+        author: 'Gonzalo Aramayo',
+        director: 'Lic. Marcela Morales',
+        year: '2025',
+        career: 'Lic. en Administración',
+        topic: 'Desarrollo Regional',
+        grade: 'Distinguido',
+        abstract: 'Análisis cuantitativo de la adopción de canales de cobro digitales y marketplaces en el centro comercial de San Salvador de Jujuy, con propuestas de transformación para comercios familiares.'
+      },
+      {
+        id: 'tfg-5',
+        title: 'Implementación de visión artificial para clasificación de producción tabacalera en los Valles',
+        author: 'Rodrigo Méndez',
+        director: 'Dra. Ana López',
+        year: '2026',
+        career: 'Ingeniería Informática',
+        topic: 'Inteligencia Artificial',
+        grade: 'Sobresaliente',
+        abstract: 'Modelo de deep learning embebido en cámaras industriales para clasificar automáticamente las hojas de tabaco Virginia según textura y coloración en centros de acopio jujeños.'
+      },
+      {
+        id: 'tfg-6',
+        title: 'Régimen de protección de datos personales en expedientes judiciales digitales de Jujuy',
+        author: 'Carolina Solís',
+        director: 'Dr. Martín Fernández',
+        year: '2023',
+        career: 'Abogacía',
+        topic: 'Ciberseguridad',
+        grade: 'Sobresaliente',
+        abstract: 'Estudio dogmático y empírico sobre la custodia y cifrado de pruebas en el sistema de gestión judicial digital de la provincia de Jujuy bajo la Ley 25.326.'
+      }
+    ];
+
+    const MOCK_MENTORES = [
+      {
+        name: 'Dra. Ana López',
+        title: 'Prof. Titular Cátedra IA',
+        specialty: 'Inteligencia Artificial & Optimización',
+        capacityTaken: 3,
+        capacityMax: 5,
+        lines: ['Machine Learning', 'Logística Regional Jujuy', 'Bioinformática'],
+        approvedCount: 14
+      },
+      {
+        name: 'Dr. Martín Fernández',
+        title: 'Prof. Adjunto de Redes',
+        specialty: 'Ciberseguridad & Auditoría de Sistemas',
+        capacityTaken: 2,
+        capacityMax: 5,
+        lines: ['Ethical Hacking', 'Normativas BCRA', 'Protección de Datos'],
+        approvedCount: 9
+      },
+      {
+        name: 'Ing. Carlos Rossi',
+        title: 'Prof. Asociado de Software',
+        specialty: 'Arquitectura Cloud & IoT',
+        capacityTaken: 3,
+        capacityMax: 4,
+        lines: ['Cloud Computing', 'Blockchain y Trazabilidad', 'Sistemas Embebidos'],
+        approvedCount: 19
+      },
+      {
+        name: 'Lic. Marcela Morales',
+        title: 'Prof. Titular de Administración',
+        specialty: 'Sistemas ERP & Gestión Estratégica',
+        capacityTaken: 1,
+        capacityMax: 4,
+        lines: ['Transformación Digital PYME', 'Cadena de Suministro', 'Finanzas'],
+        approvedCount: 11
+      }
+    ];
+
+    const MOCK_TUTORES_PARES = [
+      {
+        name: 'Sofía Martínez',
+        initials: 'SM',
+        subject: 'Programación II & Algoritmos',
+        carrera: 'Ing. en Informática',
+        rating: 4.9,
+        reviewsCount: 28,
+        sessionsCount: 18,
+        year: '4to Año',
+        modality: 'Presencial y Virtual',
+        horario: 'Tarde',
+        availableSlot: 'Jueves 16:00 hs · Viernes 17:30 hs',
+        topics: ['Árboles Binarios', 'Punteros en C++', 'Complejidad Algorítmica'],
+        badge: 'Tutor de Cátedra Acreditado'
+      },
+      {
+        name: 'Martín Fernández',
+        initials: 'MF',
+        subject: 'Investigación Operativa',
+        carrera: 'Ing. en Informática',
+        rating: 5.0,
+        reviewsCount: 31,
+        sessionsCount: 22,
+        year: '5to Año',
+        modality: 'Presencial',
+        horario: 'Tarde',
+        availableSlot: 'Martes 15:00 hs · Jueves 18:00 hs',
+        topics: ['Método Simplex', 'Teoría de Colas', 'Modelos de Transporte'],
+        badge: 'Promedio Destacado (9.40)'
+      },
+      {
+        name: 'Camila Ramos',
+        initials: 'CR',
+        subject: 'Bases de Datos I y II (SQL)',
+        carrera: 'Ing. en Informática',
+        rating: 4.8,
+        reviewsCount: 19,
+        sessionsCount: 14,
+        year: '4to Año',
+        modality: 'Presencial y Virtual',
+        horario: 'Vespertino',
+        availableSlot: 'Lunes 18:30 hs · Miércoles 19:00 hs',
+        topics: ['Normalización 3FN', 'Consultas Complejas SQL', 'Triggers y SP'],
+        badge: 'Tutor de Cátedra Acreditado'
+      },
+      {
+        name: 'Ignacio Vilte',
+        initials: 'IV',
+        subject: 'Álgebra y Geometría Analítica',
+        carrera: 'Ing. en Informática',
+        rating: 4.7,
+        reviewsCount: 15,
+        sessionsCount: 11,
+        year: '3er Año',
+        modality: 'Presencial',
+        horario: 'Tarde',
+        availableSlot: 'Viernes 14:00 hs · Sábados 10:00 hs',
+        topics: ['Matrices y Determinantes', 'Espacios Vectoriales', 'Cónicas'],
+        badge: 'Ayudante de Trabajos Prácticos'
+      },
+      {
+        name: 'Mariana Zamar',
+        initials: 'MZ',
+        subject: 'Sistemas Operativos',
+        carrera: 'Ing. en Informática',
+        rating: 4.9,
+        reviewsCount: 22,
+        sessionsCount: 16,
+        year: '5to Año',
+        modality: 'Virtual',
+        horario: 'Vespertino',
+        availableSlot: 'Miércoles 18:00 hs · Jueves 19:30 hs',
+        topics: ['Hilos & Sincronización', 'Paginación de Memoria', 'Linux Shell'],
+        badge: 'Tutor de Cátedra Acreditado'
+      },
+      {
+        name: 'Facundo Quispe',
+        initials: 'FQ',
+        subject: 'Programación I (Introducción)',
+        carrera: 'Ing. en Informática',
+        rating: 4.8,
+        reviewsCount: 24,
+        sessionsCount: 20,
+        year: '4to Año',
+        modality: 'Presencial y Virtual',
+        horario: 'Tarde',
+        availableSlot: 'Lunes 16:00 hs · Viernes 16:00 hs',
+        topics: ['Estructuras de Control', 'Funciones y Alcance', 'Arreglos'],
+        badge: 'Tutor de Apoyo a Ingresantes'
+      }
+    ];
+
+    let savedBookmarks = new Set(['tfg-1', 'tfg-2', 'tfg-5']);
+    let currentModalTfg = null;
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate() + 2);
+      const bookingInput = document.getElementById('bookingDateInput');
+      if (bookingInput) {
+        bookingInput.value = tomorrow.toISOString().split('T')[0];
+      }
+
+      renderDesktopRepository(MOCK_TFGS);
+      renderDesktopMentores();
+      renderDesktopTutoresPares(MOCK_TUTORES_PARES);
+      renderMobileTutorsList();
+      renderMobileRepoList();
+    });
+
+    function renderDesktopRepository(tfgs) {
+      const container = document.getElementById('tfgCardsContainer');
+      if (!container) return;
+
+      if (tfgs.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white p-8 rounded-3xl text-center border border-slate-200">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto mb-2 text-2xl">
+              <i class="ph-bold ph-magnifying-glass"></i>
+            </div>
+            <h4 class="font-bold text-slate-800 text-sm">No encontramos tesis con esos filtros específicos</h4>
+            <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Probá borrando el texto de búsqueda o seleccionando "Todas las carreras".</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = tfgs.map(tfg => {
+        const isBookmarked = savedBookmarks.has(tfg.id);
+        return `
+          <div class="tfg-item bg-white p-4 sm:p-5 rounded-3xl border border-slate-200/90 shadow-sm hover:border-ucse-sky hover:shadow-md transition-all duration-200">
+            <div class="flex flex-col md:flex-row md:items-start justify-between gap-3">
+              <div class="flex-1">
+                <div class="flex flex-wrap items-center gap-1.5 mb-2">
+                  <span class="bg-blue-50 text-ucse-royal border border-blue-200 text-[10px] font-extrabold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                    <i class="ph ph-graduation-cap"></i> ${tfg.career}
+                  </span>
+                  <span class="bg-slate-100 text-slate-700 text-[10px] font-medium px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                    <i class="ph ph-calendar"></i> Año ${tfg.year}
+                  </span>
+                  <span class="bg-amber-50 text-amber-800 text-[10px] font-semibold px-2.5 py-0.5 rounded-full border border-amber-200/70 flex items-center gap-1">
+                    <i class="ph ph-tag"></i> ${tfg.topic}
+                  </span>
+                  <span class="text-[10px] text-emerald-700 font-bold bg-emerald-50 border border-emerald-200 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                    <i class="ph-fill ph-star text-amber-500 text-xs"></i>
+                    ${tfg.grade}
+                  </span>
+                </div>
+                <h4 class="text-sm font-black text-slate-900 leading-snug hover:text-ucse-royal cursor-pointer transition" onclick="openTfgDetail('${tfg.id}')">
+                  ${tfg.title}
+                </h4>
+                <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-500 mt-1.5">
+                  <span class="flex items-center gap-1">
+                    <i class="ph ph-user text-slate-400"></i>
+                    Autor: <strong class="text-slate-700 font-semibold">${tfg.author}</strong>
+                  </span>
+                  <span class="flex items-center gap-1">
+                    <i class="ph ph-chalkboard-teacher text-ucse-royal"></i>
+                    Director: <strong class="text-ucse-blue font-semibold">${tfg.director}</strong>
+                  </span>
+                </div>
+                <p class="text-[11px] text-slate-600 line-clamp-2 mt-2.5 bg-slate-50/80 p-3 rounded-2xl border border-slate-100 leading-relaxed">
+                  "${tfg.abstract}"
+                </p>
+              </div>
+
+              <div class="flex md:flex-col gap-2 shrink-0 self-end md:self-start mt-2 md:mt-0">
+                <button onclick="openTfgDetail('${tfg.id}')" 
+                        class="bg-ucse-royal hover:bg-ucse-blue text-white text-xs font-bold px-4 py-2 rounded-2xl transition shadow-sm flex items-center justify-center gap-1.5">
+                  <i class="ph-bold ph-book-open"></i>
+                  <span>Leer Ficha</span>
+                </button>
+                <button onclick="toggleBookmark('${tfg.id}')" 
+                        class="px-3.5 py-1.5 rounded-2xl border ${isBookmarked ? 'border-amber-400 bg-amber-50 text-amber-800' : 'border-slate-200 bg-slate-50 text-slate-600'} text-xs font-semibold hover:bg-slate-100 transition flex items-center justify-center gap-1.5">
+                  <i class="ph-fill ${isBookmarked ? 'ph-bookmark text-amber-600' : 'ph-bookmark-simple text-slate-400'}"></i>
+                  <span>${isBookmarked ? 'Guardada' : 'Guardar'}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderDesktopMentores() {
+      const container = document.getElementById('mentoresGridContainer');
+      if (!container) return;
+
+      container.innerHTML = MOCK_MENTORES.map(mentor => {
+        const available = mentor.capacityMax - mentor.capacityTaken;
+        const percent = (mentor.capacityTaken / mentor.capacityMax) * 100;
+        const isFull = available <= 0;
+
+        return `
+          <div class="bg-white p-4 sm:p-5 rounded-3xl border border-slate-200/90 shadow-sm flex flex-col justify-between hover:shadow-md hover:border-ucse-sky transition duration-200">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-3">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-100 via-sky-100 to-indigo-100 text-ucse-blue font-black text-sm flex items-center justify-center border border-blue-200 shadow-sm shrink-0">
+                    ${mentor.name.split(' ').map(n => n[0]).join('')}
+                  </div>
+                  <div>
+                    <h4 class="text-sm font-black text-slate-900 leading-tight">${mentor.name}</h4>
+                    <p class="text-[11px] text-slate-500 font-medium">${mentor.title}</p>
+                  </div>
+                </div>
+                <span class="text-[10px] font-black px-2.5 py-1 rounded-full shrink-0 flex items-center gap-1 ${isFull ? 'bg-rose-100 text-rose-700' : available <= 1 ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">
+                  <span class="w-1.5 h-1.5 rounded-full ${isFull ? 'bg-rose-500' : available <= 1 ? 'bg-amber-500' : 'bg-emerald-500'}"></span>
+                  ${available > 0 ? `${available} libres` : 'Completo'}
+                </span>
+              </div>
+
+              <div class="bg-slate-50 p-2.5 rounded-2xl border border-slate-100 mb-3">
+                <span class="text-[10px] font-bold text-ucse-royal uppercase tracking-wider block">Línea de especialidad</span>
+                <p class="text-xs font-bold text-slate-800 mt-0.5">${mentor.specialty}</p>
+              </div>
+
+              <div class="space-y-1 mb-3">
+                <div class="flex justify-between text-[10px] text-slate-500 font-medium">
+                  <span>Tesistas en seguimiento</span>
+                  <span class="font-bold text-slate-700">${mentor.capacityTaken} de ${mentor.capacityMax} cupos ocupados</span>
+                </div>
+                <div class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden p-0.5">
+                  <div class="h-full rounded-full transition-all duration-300 ${percent >= 80 ? 'bg-amber-500' : 'bg-ucse-royal'}" style="width: ${percent}%"></div>
+                </div>
+              </div>
+
+              <div>
+                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Temas que acepta</span>
+                <div class="flex flex-wrap gap-1">
+                  ${mentor.lines.map(l => `<span class="text-[10px] bg-slate-100 text-slate-700 font-medium px-2 py-0.5 rounded-lg">#${l}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between">
+              <span class="text-[10px] text-emerald-700 font-semibold flex items-center gap-1">
+                <i class="ph-bold ph-check text-xs"></i>
+                ${mentor.approvedCount} tesis guiadas
+              </span>
+              <button onclick="openProposalFor('${mentor.name}')" 
+                      class="bg-ucse-royal hover:bg-ucse-blue text-white text-xs font-black px-3.5 py-1.5 rounded-xl transition shadow flex items-center gap-1">
+                <i class="ph-bold ph-paper-plane-tilt"></i>
+                <span>Postular Idea</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderDesktopTutoresPares(tutorsList) {
+      const container = document.getElementById('desktopTutoresGrid');
+      if (!container) return;
+
+      if (!tutorsList || tutorsList.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full bg-white p-8 rounded-3xl text-center border border-slate-200">
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 text-ucse-royal flex items-center justify-center mx-auto mb-2 text-2xl">
+              <i class="ph-bold ph-users-three"></i>
+            </div>
+            <h4 class="font-bold text-slate-800 text-sm">No encontramos compañeros tutores con esos filtros</h4>
+            <p class="text-xs text-slate-500 mt-1 max-w-sm mx-auto">Probá seleccionando "Todas las materias" o cualquier modalidad.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = tutorsList.map(tutor => `
+        <div class="bg-white p-4 sm:p-5 rounded-3xl border border-slate-200/90 shadow-sm hover:border-ucse-sky hover:shadow-md transition-all duration-200 flex flex-col justify-between">
+          <div>
+            <div class="flex items-start justify-between gap-3 mb-3">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-amber-200 via-amber-300 to-amber-400 text-ucse-navy font-black text-sm flex items-center justify-center border border-amber-300 shadow-sm shrink-0">
+                  ${tutor.initials}
+                </div>
+                <div>
+                  <div class="flex items-center gap-1.5">
+                    <h4 class="text-sm font-black text-slate-900">${tutor.name}</h4>
+                    <i class="ph-fill ph-seal-check text-emerald-500 text-base" title="Acreditado por Cátedra"></i>
+                  </div>
+                  <p class="text-[11px] text-slate-500 font-medium">${tutor.carrera} · ${tutor.year}</p>
+                </div>
+              </div>
+              <div class="text-right shrink-0 bg-amber-50 border border-amber-200/70 px-2 py-1 rounded-xl">
+                <div class="flex items-center gap-1 justify-end">
+                  <span class="text-xs font-black text-amber-900">${tutor.rating}</span>
+                  <i class="ph-fill ph-star text-amber-500 text-xs"></i>
+                </div>
+                <span class="text-[9px] text-amber-800 font-medium block">${tutor.reviewsCount} opiniones</span>
+              </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-blue-50 to-sky-50 border border-blue-100 p-3 rounded-2xl mb-3">
+              <div class="flex items-center justify-between mb-1">
+                <span class="text-[10px] uppercase font-extrabold text-ucse-royal tracking-wider">Cátedra que apoya</span>
+                <span class="text-[9px] bg-emerald-100 text-emerald-800 font-extrabold px-2 py-0.5 rounded-full flex items-center gap-1"><i class="ph ph-check"></i> Promocionada</span>
+              </div>
+              <h5 class="text-xs font-black text-ucse-navy">${tutor.subject}</h5>
+            </div>
+
+            <div class="space-y-1.5 text-[11px] text-slate-600 mb-3 bg-slate-50/80 p-3 rounded-2xl border border-slate-100">
+              <div class="flex items-center gap-2">
+                <i class="ph-bold ph-calendar-blank text-ucse-royal text-xs"></i>
+                <span><strong>Horarios:</strong> ${tutor.availableSlot}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="ph-bold ph-map-pin text-ucse-royal text-xs"></i>
+                <span><strong>Modalidad:</strong> ${tutor.modality}</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <i class="ph-bold ph-chats-circle text-ucse-royal text-xs"></i>
+                <span><strong>Experiencia:</strong> ${tutor.sessionsCount} sesiones completadas</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Dudas que te ayuda a resolver</span>
+              <div class="flex flex-wrap gap-1">
+                ${tutor.topics.map(tp => `<span class="text-[10px] bg-slate-100 text-slate-700 font-medium px-2 py-0.5 rounded-lg">${tp}</span>`).join('')}
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+            <span class="text-[10px] text-slate-400 font-medium">Sede UCSE Jujuy</span>
+            <button onclick="openBookingFor('${tutor.name}', '${tutor.subject}')" class="bg-ucse-royal hover:bg-ucse-blue text-white text-xs font-black px-4 py-2 rounded-2xl transition shadow-sm flex items-center gap-1.5">
+              <i class="ph-bold ph-calendar-plus"></i>
+              <span>Agendar con ${tutor.name.split(' ')[0]}</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterDesktopTutores() {
+      const query = (document.getElementById('desktopPeerSearchInput')?.value || '').toLowerCase().trim();
+      const subject = document.getElementById('desktopPeerSubjectFilter')?.value || 'ALL';
+      const modalidad = document.getElementById('desktopPeerModalidadFilter')?.value || 'ALL';
+      const horario = document.getElementById('desktopPeerHorarioFilter')?.value || 'ALL';
+
+      const filtered = MOCK_TUTORES_PARES.filter(tutor => {
+        const matchesQuery = query === '' ||
+          tutor.name.toLowerCase().includes(query) ||
+          tutor.subject.toLowerCase().includes(query) ||
+          tutor.topics.some(tp => tp.toLowerCase().includes(query));
+
+        const matchesSubject = (subject === 'ALL') || tutor.subject.toLowerCase().includes(subject.toLowerCase());
+        const matchesModalidad = (modalidad === 'ALL') || tutor.modality.includes(modalidad);
+        const matchesHorario = (horario === 'ALL') || (tutor.horario === horario);
+
+        return matchesQuery && matchesSubject && matchesModalidad && matchesHorario;
+      });
+
+      renderDesktopTutoresPares(filtered);
+    }
+
+    function renderMobileTutorsList() {
+      const container = document.getElementById('mobileTutorsList');
+      if (!container) return;
+
+      container.innerHTML = MOCK_TUTORES_PARES.map(tutor => `
+        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-2">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-100 to-amber-200 text-ucse-navy font-black text-xs flex items-center justify-center border border-amber-300 shrink-0">
+              ${tutor.initials}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <h5 class="text-xs font-bold text-slate-900 truncate">${tutor.name}</h5>
+                <span class="text-[10px] text-emerald-600 bg-emerald-50 px-1.5 rounded font-bold flex items-center gap-0.5"><i class="ph-fill ph-star text-amber-500"></i> ${tutor.rating}</span>
+              </div>
+              <p class="text-[10px] text-slate-600 font-medium truncate">${tutor.subject}</p>
+              <span class="text-[9px] text-slate-400">${tutor.year} · ${tutor.sessionsCount} tutorías</span>
+            </div>
+          </div>
+          <div class="pt-1.5 border-t border-slate-100 flex items-center justify-between">
+            <span class="text-[9px] text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded">Tutor Validado UCSE</span>
+            <button onclick="openBookingFor('${tutor.name}', '${tutor.subject}')" class="px-3 py-1 rounded-lg bg-ucse-blue text-white text-[10px] font-bold hover:bg-ucse-navy transition shadow">
+              Solicitar Sesión
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderMobileRepoList() {
+      const container = document.getElementById('mobileRepoList');
+      if (!container) return;
+
+      container.innerHTML = MOCK_TFGS.slice(0, 4).map(tfg => `
+        <div class="bg-white p-2.5 rounded-2xl border border-slate-200 shadow-sm hover:border-ucse-sky transition cursor-pointer" onclick="openTfgDetail('${tfg.id}')">
+          <span class="text-[9px] font-bold bg-blue-50 text-ucse-royal px-2 py-0.2 rounded">${tfg.career} · ${tfg.year}</span>
+          <h5 class="text-xs font-bold text-slate-900 mt-1 line-clamp-2">${tfg.title}</h5>
+          <p class="text-[10px] text-slate-500 mt-1">Autor: ${tfg.author} · Dir: ${tfg.director}</p>
+        </div>
+      `).join('');
+    }
+
+    function setViewMode(mode) {
+      const dualContainer = document.getElementById('dualContainer');
+      const mobileCol = document.getElementById('mobileColumn');
+      const desktopCol = document.getElementById('desktopColumn');
+
+      const btnDual = document.getElementById('btnViewDual');
+      const btnMobile = document.getElementById('btnViewMobile');
+      const btnDesktop = document.getElementById('btnViewDesktop');
+
+      [btnDual, btnMobile, btnDesktop].forEach(btn => {
+        btn.className = 'px-3.5 py-1.5 rounded-lg transition-all duration-200 flex items-center gap-1.5 hover:text-white';
+      });
+
+      if (mode === 'dual') {
+        btnDual.className = 'px-3.5 py-1.5 rounded-lg transition-all duration-200 flex items-center gap-1.5 bg-ucse-royal text-white shadow-md';
+        dualContainer.className = 'grid grid-cols-1 xl:grid-cols-12 gap-7 items-start transition-all duration-300';
+        mobileCol.classList.remove('hidden');
+        desktopCol.classList.remove('hidden');
+        mobileCol.className = 'xl:col-span-4 flex flex-col items-center';
+        desktopCol.className = 'xl:col-span-8 flex flex-col items-center';
+      } else if (mode === 'mobile') {
+        btnMobile.className = 'px-3.5 py-1.5 rounded-lg transition-all duration-200 flex items-center gap-1.5 bg-ucse-royal text-white shadow-md';
+        dualContainer.className = 'flex justify-center transition-all duration-300';
+        mobileCol.classList.remove('hidden');
+        desktopCol.classList.add('hidden');
+        mobileCol.className = 'w-full max-w-[430px] flex flex-col items-center';
+      } else if (mode === 'desktop') {
+        btnDesktop.className = 'px-3.5 py-1.5 rounded-lg transition-all duration-200 flex items-center gap-1.5 bg-ucse-royal text-white shadow-md';
+        dualContainer.className = 'w-full transition-all duration-300';
+        mobileCol.classList.add('hidden');
+        desktopCol.classList.remove('hidden');
+        desktopCol.className = 'w-full flex flex-col items-center';
+      }
+    }
+
+    function switchDesktopView(viewName) {
+      const btnRepo = document.getElementById('deskTabRepo');
+      const btnMentores = document.getElementById('deskTabMentores');
+      const btnTutoresPares = document.getElementById('deskTabTutoresPares');
+      const btnExpediente = document.getElementById('deskTabExpediente');
+
+      const secRepo = document.getElementById('desktopSectionRepo');
+      const secMentores = document.getElementById('desktopSectionMentores');
+      const secTutoresPares = document.getElementById('desktopSectionTutoresPares');
+      const secExpediente = document.getElementById('desktopSectionExpediente');
+
+      [btnRepo, btnMentores, btnTutoresPares, btnExpediente].forEach(b => {
+        if (b) b.className = 'px-3.5 py-1.5 rounded-lg text-slate-300 hover:text-white transition flex items-center gap-1.5';
+      });
+
+      if (secRepo) secRepo.classList.add('hidden');
+      if (secMentores) secMentores.classList.add('hidden');
+      if (secTutoresPares) secTutoresPares.classList.add('hidden');
+      if (secExpediente) secExpediente.classList.add('hidden');
+
+      if (viewName === 'repo' && btnRepo && secRepo) {
+        btnRepo.className = 'px-3.5 py-1.5 rounded-lg bg-ucse-royal text-white shadow flex items-center gap-1.5 transition';
+        secRepo.classList.remove('hidden');
+      } else if (viewName === 'mentores' && btnMentores && secMentores) {
+        btnMentores.className = 'px-3.5 py-1.5 rounded-lg bg-ucse-royal text-white shadow flex items-center gap-1.5 transition';
+        secMentores.classList.remove('hidden');
+      } else if (viewName === 'tutoresPares' && btnTutoresPares && secTutoresPares) {
+        btnTutoresPares.className = 'px-3.5 py-1.5 rounded-lg bg-ucse-royal text-white shadow flex items-center gap-1.5 transition';
+        secTutoresPares.classList.remove('hidden');
+      } else if (viewName === 'expediente' && btnExpediente && secExpediente) {
+        btnExpediente.className = 'px-3.5 py-1.5 rounded-lg bg-ucse-royal text-white shadow flex items-center gap-1.5 transition';
+        secExpediente.classList.remove('hidden');
+      }
+    }
+
+    function switchMobileNav(tabName) {
+      const navIds = ['navMobileInicio', 'navMobileTutores', 'navMobileRepo', 'navMobilePerfil'];
+      navIds.forEach(id => {
+        const btn = document.getElementById(id);
+        btn.className = 'flex flex-col items-center gap-0.5 text-slate-400 hover:text-ucse-blue font-medium transition';
+      });
+
+      const views = ['mobileViewInicio', 'mobileViewTutores', 'mobileViewRepo', 'mobileViewPerfil'];
+      views.forEach(v => document.getElementById(v).classList.add('hidden'));
+
+      if (tabName === 'inicio') {
+        document.getElementById('navMobileInicio').className = 'flex flex-col items-center gap-0.5 text-ucse-blue font-extrabold transition';
+        document.getElementById('mobileViewInicio').classList.remove('hidden');
+      } else if (tabName === 'tutores') {
+        document.getElementById('navMobileTutores').className = 'flex flex-col items-center gap-0.5 text-ucse-blue font-extrabold transition';
+        document.getElementById('mobileViewTutores').classList.remove('hidden');
+      } else if (tabName === 'repo') {
+        document.getElementById('navMobileRepo').className = 'flex flex-col items-center gap-0.5 text-ucse-blue font-extrabold transition';
+        document.getElementById('mobileViewRepo').classList.remove('hidden');
+      } else if (tabName === 'perfil') {
+        document.getElementById('navMobilePerfil').className = 'flex flex-col items-center gap-0.5 text-ucse-blue font-extrabold transition';
+        document.getElementById('mobileViewPerfil').classList.remove('hidden');
+      }
+    }
+
+    function filterRepository() {
+      const query = (document.getElementById('desktopGlobalSearch')?.value || '').toLowerCase().trim();
+      const career = document.getElementById('filterCareer').value;
+      const year = document.getElementById('filterYear').value;
+      const topic = document.getElementById('filterTopic').value;
+      const grade = document.getElementById('filterGrade').value;
+
+      const filtered = MOCK_TFGS.filter(item => {
+        const matchesQuery = query === '' || 
+          item.title.toLowerCase().includes(query) ||
+          item.author.toLowerCase().includes(query) ||
+          item.director.toLowerCase().includes(query) ||
+          item.abstract.toLowerCase().includes(query);
+
+        const matchesCareer = (career === 'ALL') || (item.career === career);
+        const matchesYear = (year === 'ALL') || (item.year === year);
+        const matchesTopic = (topic === 'ALL') || (item.topic === topic);
+        const matchesGrade = (grade === 'ALL') || (item.grade === grade);
+
+        return matchesQuery && matchesCareer && matchesYear && matchesTopic && matchesGrade;
+      });
+
+      renderDesktopRepository(filtered);
+    }
+
+    function filterMobileTutors() {
+      const q = (document.getElementById('mobileTutorSearchInput')?.value || '').toLowerCase();
+      const items = MOCK_TUTORES_PARES.filter(t => t.name.toLowerCase().includes(q) || t.subject.toLowerCase().includes(q));
+      const container = document.getElementById('mobileTutorsList');
+      container.innerHTML = items.map(tutor => `
+        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-sm flex flex-col gap-2">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-900 font-black text-xs flex items-center justify-center border border-amber-300">
+              ${tutor.initials}
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <h5 class="text-xs font-bold text-slate-900 truncate">${tutor.name}</h5>
+                <span class="text-[10px] text-emerald-600 bg-emerald-50 px-1.5 rounded font-bold flex items-center gap-0.5"><i class="ph-fill ph-star text-amber-500"></i> ${tutor.rating}</span>
+              </div>
+              <p class="text-[10px] text-slate-600 font-medium truncate">${tutor.subject}</p>
+            </div>
+          </div>
+          <button onclick="openBookingFor('${tutor.name}', '${tutor.subject}')" class="w-full py-1.5 rounded-xl bg-ucse-blue text-white text-[10px] font-bold hover:bg-ucse-navy transition shadow">
+            Agendar con ${tutor.name.split(' ')[0]}
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function filterMobileRepo() {
+      const q = (document.getElementById('mobileRepoSearchInput')?.value || '').toLowerCase();
+      const items = MOCK_TFGS.filter(t => t.title.toLowerCase().includes(q) || t.author.toLowerCase().includes(q));
+      const container = document.getElementById('mobileRepoList');
+      container.innerHTML = items.map(tfg => `
+        <div class="bg-white p-2.5 rounded-2xl border border-slate-200 shadow-sm hover:border-ucse-sky transition cursor-pointer" onclick="openTfgDetail('${tfg.id}')">
+          <span class="text-[9px] font-bold bg-blue-50 text-ucse-royal px-2 py-0.2 rounded">${tfg.career} · ${tfg.year}</span>
+          <h5 class="text-xs font-bold text-slate-900 mt-1 line-clamp-2">${tfg.title}</h5>
+          <p class="text-[10px] text-slate-500 mt-1">Autor: ${tfg.author} · Dir: ${tfg.director}</p>
+        </div>
+      `).join('');
+    }
+
+    function openModal(id) {
+      const m = document.getElementById(id);
+      if (m) {
+        m.classList.remove('hidden');
+        m.classList.add('flex');
+      }
+    }
+
+    function closeModal(id) {
+      const m = document.getElementById(id);
+      if (m) {
+        m.classList.add('hidden');
+        m.classList.remove('flex');
+      }
+    }
+
+    function openBookingFor(tutorName, subject) {
+      document.getElementById('bookingTutorName').value = tutorName + ' (' + subject + ')';
+      openModal('modalPeerBooking');
+    }
+
+    function openProposalFor(mentorName) {
+      const sel = document.getElementById('proposalDirectorSelect');
+      for (let i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].text.includes(mentorName)) {
+          sel.selectedIndex = i;
+          break;
+        }
+      }
+      openModal('modalProposal');
+    }
+
+    function openTfgDetail(tfgId) {
+      const tfg = MOCK_TFGS.find(t => t.id === tfgId);
+      if (!tfg) return;
+      currentModalTfg = tfg;
+
+      document.getElementById('tfgModalTitle').innerText = tfg.title;
+      document.getElementById('tfgModalAuthor').innerText = tfg.author;
+      document.getElementById('tfgModalDirector').innerText = tfg.director;
+      document.getElementById('tfgModalBadge').innerText = `${tfg.career} · Defendido en ${tfg.year}`;
+      document.getElementById('tfgModalGrade').innerText = `Calificación: 10 (${tfg.grade})`;
+      document.getElementById('tfgModalAbstract').innerText = tfg.abstract;
+
+      const isBookmarked = savedBookmarks.has(tfg.id);
+      const btnBm = document.getElementById('btnBookmarkModal');
+      if (btnBm) {
+        btnBm.innerHTML = isBookmarked ? 
+          `<i class="ph-fill ph-bookmark text-amber-600"></i><span>Guardado como Referencia</span>` : 
+          `<i class="ph ph-bookmark-simple"></i><span>Guardar Referencia</span>`;
+      }
+
+      openModal('modalTfgSheet');
+    }
+
+    function handleBookingSubmit(e) {
+      e.preventDefault();
+      closeModal('modalPeerBooking');
+      showToast('Solicitud de tutoría enviada con éxito. Recibirás la confirmación por notificación.');
+    }
+
+    function handleProposalSubmit(e) {
+      e.preventDefault();
+      const title = document.getElementById('proposalTitleInput').value;
+      closeModal('modalProposal');
+      showToast(`Propuesta "${title.slice(0, 30)}..." postulada. Notificada al docente y cargada en tu expediente.`);
+      switchDesktopView('expediente');
+    }
+
+    function toggleBookmark(tfgId) {
+      if (savedBookmarks.has(tfgId)) {
+        savedBookmarks.delete(tfgId);
+        showToast('TFG removido de tus referencias guardadas');
+      } else {
+        savedBookmarks.add(tfgId);
+        showToast('TFG agregado a tus referencias para armar el marco teórico');
+      }
+      document.getElementById('savedTfgCounter').innerText = `${savedBookmarks.size} tesis`;
+      filterRepository();
+    }
+
+    function toggleBookmarkCurrentTfg() {
+      if (!currentModalTfg) return;
+      toggleBookmark(currentModalTfg.id);
+      const isBookmarked = savedBookmarks.has(currentModalTfg.id);
+      const btnBm = document.getElementById('btnBookmarkModal');
+      btnBm.innerHTML = isBookmarked ? 
+        `<i class="ph-fill ph-bookmark text-amber-600"></i><span>Guardado como Referencia</span>` : 
+        `<i class="ph ph-bookmark-simple"></i><span>Guardar Referencia</span>`;
+    }
+
+    function copyApaCitation() {
+      if (!currentModalTfg) return;
+      const citation = `${currentModalTfg.author.split(' ').reverse().join(', ')} (${currentModalTfg.year}). ${currentModalTfg.title} [Trabajo Final de Grado, Universidad Católica de Santiago del Estero - DASS]. Repositorio Institucional UCSE.`;
+      
+      const tempInput = document.createElement('input');
+      tempInput.value = citation;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+
+      showToast('Cita en formato APA 7ma Edición copiada al portapapeles');
+    }
+
+    function toggleNotificationPanel() {
+      const panel = document.getElementById('notificationDropdown');
+      panel.classList.toggle('hidden');
+    }
+
+    function clearNotifications() {
+      document.getElementById('globalNotificationBadge').classList.add('hidden');
+      document.getElementById('notificationDropdown').classList.add('hidden');
+      showToast('Todas las notificaciones marcadas como leídas');
+    }
+
+    let toastTimer;
+    function showToast(msg) {
+      const toast = document.getElementById('toastContainer');
+      const text = document.getElementById('toastMessage');
+      text.innerText = msg;
+      toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+      }, 4000);
+    }
+  </script>
+</body>
+</html>
